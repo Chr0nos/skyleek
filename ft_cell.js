@@ -20,7 +20,7 @@ function ft_getAdjacentsCells(cell)
 }
 
 
-function ft_getReachableMap(@next, @map, @queue, cell)
+function ft_getReachableMap(@next, @map, @queue, cell, @ignore)
 {
 	/*
 	* Returns map
@@ -34,7 +34,7 @@ function ft_getReachableMap(@next, @map, @queue, cell)
 		nextCell = next[i];
 		nextCellContent = getCellContent(nextCell);
 		if (nextCellContent === CELL_OBSTACLE);
-		else if (nextCellContent === CELL_PLAYER);
+		else if (nextCellContent === CELL_PLAYER || !inArray(ignore, getLeekOnCell(nextCell)));
 		else if ((map[nextCell] === -1) || (map[nextCell] > map[cell] + 1));
 		else
 		{
@@ -47,7 +47,7 @@ function ft_getReachableMap(@next, @map, @queue, cell)
 	}
 }
 
-function ft_getReachableCells(cell, MP)
+function ft_getReachableCells(cell, MP, ignore)
 {
 	/*
 	* Returns an array of all id reachable cells
@@ -57,7 +57,6 @@ function ft_getReachableCells(cell, MP)
 	var map = [];
 	var next;
 	var walk = [];
-	var i;
 
 	fill(map, -1, 613);
 	map[cell] = 0;
@@ -67,10 +66,18 @@ function ft_getReachableCells(cell, MP)
 	{
 		cell = shift(queue);
 		next = ft_getAdjacentsCells(cell);
-		ft_getReachableMap(next, map, queue, cell);
+		ft_getReachableMap(next, map, queue, cell, ignore);
 	}
 	remove(map, ft_array_indexOf(map, -1));
 	return walk;
+}
+
+function ft_getReachableCellsBy(leek, ignore)
+{
+	/*
+	* Returns an array of all id reachable cells by leek
+	*/
+	return ft_getReachableCells(getCell(leek), getMP(leek), ignore);
 }
 
 function ft_getSafeCells(cell, MP)
@@ -81,5 +88,22 @@ function ft_getSafeCells(cell, MP)
 	var safe;
 	var next;
 
-	safe = ft_getReachableCells(cell, MP);
+	var reachable;
+	var weapon;
+	var ignore;
+
+	safe = ft_getReachableCells(cell, MP, [getLeek()]);
+
+	for (var enemy in getAliveEnemies()) {
+		ignore = subArray(next, 0, search(next, enemy));
+		reachable = ft_getReachableCellsBy(enemy, ignore);
+		weapon = getWeapon(enemy);
+
+		for (var cell in reachable) {
+			for (var target in safe)
+				if (ft_can_use_weapon(weapon, leek, cell)) removeElement(safe, target);
+		}
+	}
+
+	return safe;
 }
