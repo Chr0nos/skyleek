@@ -98,14 +98,21 @@ function ft_getSafeCells(cell, MP)
 
 	safe = ft_getReachableCells(cell, MP, [getLeek()]);
 
-	for (var enemy in getAliveEnemies()) {
+	for (var enemy in getAliveEnemies()) 
+	{
 		ignore = subArray(next, 0, search(next, enemy));
 		reachable = ft_getReachableCellsBy(enemy, ignore);
 		weapon = getWeapon(enemy);
 
-		for (cell in reachable) {
+		for (cell in reachable) 
+		{
 			for (target in safe)
-				if (ft_can_use_weapon(weapon, leek, cell)) removeElement(safe, target);
+			{
+				if (ft_can_use_weapon(weapon, leek, cell)) 
+				{
+					removeElement(safe, target);
+				}
+			}
 		}
 	}
 
