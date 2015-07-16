@@ -1,8 +1,8 @@
 function ft_array_indexOf(@array, item, array_size)
 {
 	/*
-	* this function will return the first position of "item" find in
-	* array parameter. you have to fill the array size
+	* This function will return the first position of "item" find in
+	* array parameter. You have to fill the array size
 	*/
 	var i;
 
@@ -18,7 +18,7 @@ function ft_array_indexOf(@array, item, array_size)
 function ft_array_indexOf(@array, item)
 {
 	/*
-	* this function will return the first position of "item" find in
+	* This function will return the first position of "item" find in
 	* array parameter
 	*/
 	return ft_array_indexOf(array, item, count(array));
@@ -27,8 +27,8 @@ function ft_array_indexOf(@array, item)
 function ft_inArray(@array, item, size)
 {
 	/*
-	* this function return true of item is
-	* in "array", else it will return false
+	* This function return true of item is
+	* in "array", else it will return false. You have to fill the array size
 	*/
 	while (size--)
 	{
@@ -39,6 +39,41 @@ function ft_inArray(@array, item, size)
 
 function ft_inArray(@array, item)
 {
+	/*
+	* This function return true of item is
+	* in "array", else it will return false
+	*/
 	return ft_inArray(array, item, count(array));
 }
 
+function ft_arraySort(array, greaterThan)
+{
+	/*
+	* Sort array in order of growth
+	*/
+	if(count(array) <= 1)
+	{
+		return array;
+	}
+
+	var pivot
+	var arrayLeft;
+	var less  = [];
+	var more  = [];
+
+	pivot = array[0];
+	arrayLeft = count(array);
+
+	while(arrayLeft--)
+	{
+		push(greaterThan(array[i], pivot) ? more : less, array[i]);	
+	}
+
+	less = ft_arraySort(less, greaterThan);
+	more = ft_arraySort(more, greaterThan);
+	
+	push(less, pivot);
+	pushAll(less, more);
+	
+	return less;
+}
