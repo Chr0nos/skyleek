@@ -56,7 +56,7 @@ function ft_arraySort(array, greaterThan)
 		return array;
 	}
 
-	var pivot
+	var pivot;
 	var arrayLeft;
 	var less  = [];
 	var more  = [];
