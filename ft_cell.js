@@ -34,7 +34,8 @@ function ft_getReachableMap(@next, @map, @queue, cell, @ignore)
 		nextCell = next[i];
 		nextCellContent = getCellContent(nextCell);
 		if (nextCellContent === CELL_OBSTACLE);
-		else if (nextCellContent === CELL_PLAYER || !inArray(ignore, getLeekOnCell(nextCell)));
+		else if (nextCellContent === CELL_PLAYER));
+		else if (!inArray(ignore, getLeekOnCell(nextCell));
 		else if ((map[nextCell] === -1) || (map[nextCell] > map[cell] + 1));
 		else
 		{
@@ -92,6 +93,9 @@ function ft_getSafeCells(cell, MP)
 	var weapon;
 	var ignore;
 
+	var cell
+	var target
+
 	safe = ft_getReachableCells(cell, MP, [getLeek()]);
 
 	for (var enemy in getAliveEnemies()) {
@@ -99,8 +103,8 @@ function ft_getSafeCells(cell, MP)
 		reachable = ft_getReachableCellsBy(enemy, ignore);
 		weapon = getWeapon(enemy);
 
-		for (var cell in reachable) {
-			for (var target in safe)
+		for (cell in reachable) {
+			for (target in safe)
 				if (ft_can_use_weapon(weapon, leek, cell)) removeElement(safe, target);
 		}
 	}
