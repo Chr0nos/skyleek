@@ -17,7 +17,7 @@ function ft_effect_count(item, effect, value)
 	*/
 	var effects = [];
 	var n;
-	var c;
+	var effect_value;
 
 	c = 0;
 	if (isWeapon(item)) effects = getWeaponEffects(item);
@@ -30,7 +30,10 @@ function ft_effect_count(item, effect, value)
 	n = count(effects);
 	while (n--)
 	{
-		if (effects[n][0] == effect) c += effects[n][value];
+		if (effects[n][0] == effect)
+		{
+			effect_value += effects[n][value];
+		}
 	}
-	return c;
+	return effect_value;
 }
