@@ -23,3 +23,22 @@ function ft_array_indexOf(@array, item)
 	*/
 	return ft_array_indexOf(array, item, count(array));
 }
+
+function ft_inArray(@array, item, size)
+{
+	/*
+	 * this function return true of item is
+	 * in "array", else it will return false
+	*/
+	while (size--)
+	{
+		if (array[size] == item) return true;
+	}
+	return false;
+}
+
+function ft_inArray(@array, item)
+{
+	return ft_inArray(array, item, count(array));
+}
+
