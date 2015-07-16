@@ -1,8 +1,8 @@
-/*
- * Returns an array of all id adjacent cells
- */
 function ft_getAdjacentsCells(cell)
 {
+	/*
+	* Returns an array of all id adjacent cells
+	*/
 	var adj;
 	var x;
 	var y;
@@ -19,65 +19,56 @@ function ft_getAdjacentsCells(cell)
 	return adj;
 }
 
-/*
- * Returns map
- */
-function ft_getReachableMap(next, map, queue)
-{
 
+function ft_getReachableMap(@next, @map, @queue, cell)
+{
+	/*
+	* Returns map
+	*/
+	var nextLeft;
+	var nextCell;
+	var nextCellContent;
+
+	nextLeft = count(next);
+	while (nextLeft--) {
+		nextCell = next[i];
+		nextCellContent = getCellContent(nextCell);
+		if (nextCellContent === CELL_OBSTACLE);
+		else if (nextCellContent === CELL_PLAYER);
+		else if ((map[nextCell] === -1) || (map[nextCell] > map[cell] + 1));
+		else
+		{
+			map[nextCell] = map[cell] + 1;
+			if (map[nextCell] < MP)
+			{
+				push(queue, nextCell);
+			}
+		}
+	}
 }
 
-/*
- * Returns an array of all id reachable cells
- */
 function ft_getReachableCells(cell, MP)
 {
-	var queue;
+	/*
+	* Returns an array of all id reachable cells
+	*/
+	var queue = [];
 	var queueLeft;
-	var map;
-	var mapLeft;
-
+	var map = [];
 	var next;
-	var nextLeft;
-	var walk;
+	var walk = [];
 	var i;
-
-	queue = [];
-	map = [];
 
 	fill(map, -1, 613);
 	map[cell] = 0;
-	
 	push(queue, cell);
-
 	queueLeft = count(queue);
-
-	while(queueLeft--) {
+	while (queueLeft--)
+	{
 		cell = shift(queue);
 		next = ft_getAdjacentsCells(cell);
-		nextLeft = count(next);
-
-		while (nextLeft--) {
-			if(getCellContent(next[i]) === CELL_OBSTACLE)
-				continue;
-			
-			if(getCellContent(next[i]) === CELL_PLAYER && getLeekOnCell(next[i]) === getLeek())
-				continue;
-				
-			if(map[next[i]] === -1 || map[next[i]] > map[cell] + 1) {
-				map[next[i]] = map[cell] + 1;
-
-				if(map[next[i]] < MP)
-					push(queue, next[i]);
-			}	
-		}
+		ft_getReachableMap(next, map, queue, cell);
 	}
-	
-	walk = [];
-	mapLeft = count(map);
-	while (mapLeft--)
-		if(map[i] !== -1)
-			push(walk, i);
-	
+	remove(map, ft_array_indexOf(map, -1));
 	return walk;
 }
