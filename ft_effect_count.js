@@ -12,15 +12,17 @@ function ft_effect_count(item, effect, value)
 	** "3" : binar tree value
 	* 
 	* return:
-	* 	-1 : error (unknow item requested)
+	* 	-1 : error : unknow item requested)
+	*  	-2 : error : empty "item" (null)
 	*  >= 0 : the requested value
 	*/
 	var effects = [];
 	var n;
 	var effect_value;
 
-	c = 0;
-	if (isWeapon(item)) effects = getWeaponEffects(item);
+	effect_value = 0;
+	if (!item) return -2;
+	else if (isWeapon(item)) effects = getWeaponEffects(item);
 	else if (isChip(item)) effects = getChipEffects(item);
 	else if (getLevel() >= 61) effects = getEffects(item);
 	else {
