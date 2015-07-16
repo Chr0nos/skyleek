@@ -72,3 +72,14 @@ function ft_getReachableCells(cell, MP)
 	remove(map, ft_array_indexOf(map, -1));
 	return walk;
 }
+
+function ft_getSafeCells(cell, MP)
+{
+	/*
+	* Returns an array of all id safe cells
+	*/
+	var safe;
+	var next;
+
+	safe = ft_getReachableCells(cell, MP);
+}
