@@ -27,8 +27,8 @@ function ft_array_indexOf(@array, item)
 function ft_inArray(@array, item, size)
 {
 	/*
-	 * this function return true of item is
-	 * in "array", else it will return false
+	* this function return true of item is
+	* in "array", else it will return false
 	*/
 	while (size--)
 	{

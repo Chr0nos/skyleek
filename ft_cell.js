@@ -1,3 +1,6 @@
+include('ft_array')
+include('ft_weapon')
+
 function ft_getAdjacentsCells(cell)
 {
 	/*
@@ -116,5 +119,6 @@ function ft_getSafeCells(cell, MP)
 		}
 	}
 
+	mark(safe, COLOR_GREEN);
 	return safe;
 }
