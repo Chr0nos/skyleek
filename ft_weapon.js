@@ -58,7 +58,7 @@ function ft_weapon_getEnemiesInRange()
 	var n;
 	var leek;
 
-	enemies = getEnemies();
+	enemies = getAliveEnemies();
 	while (n--)
 	{
 		leek = enemies[n];
