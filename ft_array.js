@@ -104,6 +104,7 @@ function ft_array_sortByLife(@array, size)
 		else
 		{
 			insert(result, leek, 0);
+			pivotLife = result[0];
 		}
 	}
 	return result;
