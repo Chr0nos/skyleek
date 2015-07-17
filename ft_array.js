@@ -134,3 +134,57 @@ function ft_array_unique(@array)
 	}
 	return result;
 }
+
+function ft_array_sortByLifeSorter(@array, @pivot, @leek)
+{
+	/*
+	** this is an intenal function: do not use directly
+	** this function is called by ft_array_sortByLife
+	** 
+	*/
+	var leekLife;
+
+	leekLife = getLife(leek);
+	if (leekLife > pivotLife)
+	{
+		push(result, leek);
+	}
+	else
+	{
+		insert(result, leek, 0);
+		pivotLife = result[0];
+	}
+}
+
+function ft_array_sortByLife(@array, size)
+	/*
+	** this function sort the array who
+	** contains leeks id in the order of
+	** the weeker to the stronger
+	** in other words the first value will be
+	** the weaker one
+	*/
+	return ft_array_sort(@array, size, getLife, ft_array_sortByLifeSorter);
+}
+
+function ft_array_sort(@array, size, pivot, sorter)
+{
+	/*
+	** this function sort an array
+	** pivot = pointer of functoin to get something about to compare
+	** using "sorter" as a pointer of function
+	** sorter will receive: "array, pivotValue, leek"
+	** example: ft_array_sort(array, 64, getLife, ft_array_sortByLifeSorter)
+	*/
+	var result = [];
+	var leek;
+	var pivotValue;
+
+	pivotValue = pivot(array[0]);
+	while (size--)
+	{
+		leek = array[size];
+		sorter(array, pivotValue, leek);
+	}
+	return result;
+}
