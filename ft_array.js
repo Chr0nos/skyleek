@@ -2,8 +2,8 @@
 function ft_array_indexOf(@array, item, array_size)
 {
 	/*
-	* This function will return the first position of "item" find in
-	* array parameter. You have to fill the array size
+	** This function will return the first position of "item" find in
+	** array parameter. You have to fill the array size
 	*/
 	var i;
 
@@ -19,8 +19,8 @@ function ft_array_indexOf(@array, item, array_size)
 function ft_inArray(@array, item, size)
 {
 	/*
-	* This function return true of item is
-	* in "array", else it will return false. You have to fill the array size
+	** This function return true of item is
+	** in "array", else it will return false. You have to fill the array size
 	*/
 	while (size--)
 	{
@@ -32,7 +32,7 @@ function ft_inArray(@array, item, size)
 function ft_arraySort(array, greaterThan)
 {
 	/*
-	* Sort array in order of growth
+	** Sort array in order of growth
 	*/
 	if(count(array) <= 1)
 	{

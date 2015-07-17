@@ -10,11 +10,11 @@ function ft_effect_count(item, effect, value)
 	** "1" : minimal value
 	** "2" : maximal value
 	** "3" : binar tree value
-	* 
-	* return:
-	* 	-1 : error : unknow item requested)
-	*  	-2 : error : empty "item" (null)
-	*  >= 0 : the requested value
+	** 
+	** return:
+	** 	-1 : error : unknow item requested)
+	**  	-2 : error : empty "item" (null)
+	** >= 0 : the requested value
 	*/
 	var effects = [];
 	var n;

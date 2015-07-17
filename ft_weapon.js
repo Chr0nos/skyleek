@@ -4,12 +4,12 @@ include("ft_array");
 function ft_weapon_estimate_dmg(weapon, leek, shoots)
 {
 	/*
-	* Return the minimal weapon damage of weapon
-	* min to reduce fail risk, dont be too optimist !
-	* thanks to murphy's law
-	* note: actualy it dont take care about poison/burn effect
-	* mode = 1 for minimal damages (local leek)
-	* mode = 2 for maximal damages (enemy)
+	** Return the minimal weapon damage of weapon
+	** min to reduce fail risk, dont be too optimist !
+	** thanks to murphy's law
+	** note: actualy it dont take care about poison/burn effect
+	** mode = 1 for minimal damages (local leek)
+	** mode = 2 for maximal damages (enemy)
 	*/
 	var coef;
 	var dmg;
@@ -33,7 +33,7 @@ function ft_weapon_estimate_dmg(weapon, leek, shoots)
 function ft_can_use_weapon(weapon, leek, cell)
 {
     /*
-    * Return true if leek can use weapon on cell (else return false)
+    ** Return true if leek can use weapon on cell (else return false)
     */
     var lCell;
     var dist;

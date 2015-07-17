@@ -5,7 +5,7 @@ var leeksOrder = [];
 function ft_compareOrder(leekA, leekB)
 {
 	/*
-	* Compare order of two leeks and return the first of two
+	** Compare order of two leeks and return the first of two
 	*/
 	if(getFrequency(leekA) === getFrequency(leekB)) return leekA < leekB;
 	else return getFrequency(leekA) > getFrequency(leekB);
@@ -14,7 +14,7 @@ function ft_compareOrder(leekA, leekB)
 function ft_leeksInit(@leeksOrder)
 {
 	/*
-	* Initialize the leekOrder array
+	** Initialize the leekOrder array
 	*/
 	var allies  = ft_arraySort(getAllies(),  ft_compareOrder);
 	var enemies = ft_arraySort(getEnemies(), ft_compareOrder);
@@ -39,7 +39,7 @@ function ft_leeksInit(@leeksOrder)
 function ft_getOrder(@leeksOrder)
 {
 	/*
-	* Return the order of leeks
+	** Return the order of leeks
 	*/
 	if(isEmpty(leeksOrder)) ft_leeksInit();
 	
@@ -49,7 +49,7 @@ function ft_getOrder(@leeksOrder)
 function ft_getNextTurn()
 {
 	/*
-	* Return id of the next leek
+	** Return id of the next leek
 	*/
 	var leeks = ft_getOrder();
 	

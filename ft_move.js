@@ -95,7 +95,7 @@ function ft_move_post(enemy)
 	/*
 	else if (ft_weapon_has_linear(enemy))
 	{
-		//move to a non linear cell !
+		// move to a non linear cell !
 	}
 	*/
 }

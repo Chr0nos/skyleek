@@ -3,7 +3,7 @@ include("ft_array");
 function ft_getAdjacentsCells(cell)
 {
 	/*
-	* Returns an array of all id adjacent cells
+	** Returns an array of all id adjacent cells
 	*/
 	var adj;
 	var x;
@@ -24,7 +24,7 @@ function ft_getAdjacentsCells(cell)
 function ft_getReachableMap(@next, @map, @queue, cell, @ignore, @MP)
 {
 	/*
-	* Returns map
+	** Returns map
 	*/
 	var nextLeft;
 	var nextCell;
@@ -53,7 +53,7 @@ function ft_getReachableMap(@next, @map, @queue, cell, @ignore, @MP)
 function ft_getReachableCells(cell, MP, ignore)
 {
 	/*
-	* Returns an array of all id reachable cells
+	** Returns an array of all id reachable cells
 	*/
 	var queue = [];
 	var queueLeft;
@@ -78,7 +78,7 @@ function ft_getReachableCells(cell, MP, ignore)
 function ft_getReachableCellsBy(leek, ignore)
 {
 	/*
-	* Returns an array of all id reachable cells by leek
+	** Returns an array of all id reachable cells by leek
 	*/
 	return ft_getReachableCells(getCell(leek), getMP(leek), ignore);
 }
@@ -86,7 +86,7 @@ function ft_getReachableCellsBy(leek, ignore)
 function ft_getSafeCells(cell, MP)
 {
 	/*
-	* Returns an array of all id safe cells
+	** Returns an array of all id safe cells
 	*/
 	var safe;
 	var next;
@@ -94,27 +94,25 @@ function ft_getSafeCells(cell, MP)
 	var weapon;
 	var ignore;
 	var target;
-	var ccell;
+	var cCell;
 
-	/*
 	safe = ft_getReachableCells(cell, MP, [getLeek()]);
 	for (var enemy in getAliveEnemies()) 
 	{
 		ignore = subArray(next, 0, search(next, enemy));
 		reachable = ft_getReachableCellsBy(enemy, ignore);
 		weapon = getWeapon(enemy);
-		for (ccell in reachable) 
+		for (cCell in reachable) 
 		{
 			for (target in safe)
 			{
-				if (ft_can_use_weapon(weapon, leek, ccell)) 
+				if (ft_can_use_weapon(weapon, getLeekOnCell(cCell), target)) 
 				{
 					removeElement(safe, target);
 				}
 			}
 		}
 	}
-	mark(safe, COLOR_GREEN);
+
 	return safe;
-	*/
 }
