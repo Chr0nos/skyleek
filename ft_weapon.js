@@ -47,6 +47,29 @@ function ft_can_use_weapon(weapon, leek, cell)
     return true;
 }
 
+function ft_weapon_getEnemiesInRange()
+{
+	/*
+	** this function return all shootable enemy
+	** with the current weapon
+	*/
+	var enemies = [];
+	var enemies_result = [];
+	var n;
+	var leek;
+
+	enemies = getEnemies();
+	while (n--)
+	{
+		leek = enemies[n];
+		if (canUseWeapon(leek))
+		{
+			push(enemies_result, leek);
+		}
+	}
+	return enemies_result;
+}
+
 function ft_weapon_switchToNextEnemy(@enemy)
 {
 	/*
