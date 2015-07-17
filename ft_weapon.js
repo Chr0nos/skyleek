@@ -88,11 +88,12 @@ function ft_weapon_fire(weapon, enemy, shoots)
 		if (useWeapon(enemy) == USE_SUCCESS)
 		{
 			sucess++;
+			if (!isAlive(enemy))
+			{
+				ft_weapon_switchToNextEnemy(enemy);
+			}
 		}
-		if (!isAlive(enemy))
-		{
-			ft_weapon_switchToNextEnemy(enemy);
-		}
+
 	}
 	return sucess;
 }
