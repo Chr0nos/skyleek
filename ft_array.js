@@ -78,6 +78,37 @@ function ft_arraySort(array, greaterThan)
 	return less;
 }
 
+function ft_array_sortByLife(@array, size)
+{
+	/*
+	** this function sort the array who
+	** contains leeks id in the order of
+	** the weeker to the stronger
+	** in other words the first value will be
+	** the weaker one
+	*/
+	var result = [];
+	var leek;
+	var leekLife;
+	var pivotLife;
+
+	pivotLife = getLife(array[0]);
+	while (size--)
+	{
+		leek = array[size];
+		leekLife = getLife(leek);
+		if (leekLife > pivotLife)
+		{
+			push(array, leek);
+		}
+		else
+		{
+			insert(array, leek, 0);
+		}
+	}
+	return result;
+}
+
 function ft_array_unique(@array)
 {
 	/*
