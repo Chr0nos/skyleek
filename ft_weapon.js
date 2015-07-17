@@ -58,9 +58,9 @@ function ft_weapon_estimate_dmg(weapon, leek, shoots)
 
 function ft_can_use_weapon(weapon, leek, cell)
 {
-	/*
-	* Return true if leek can use weapon on cell (else return false)
-	*/
+    /*
+    * Return true if leek can use weapon on cell (else return false)
+    */
     var lCell;
     var dist;
  
