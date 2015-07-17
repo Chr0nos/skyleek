@@ -1,3 +1,12 @@
+function ft_debug_operations(@func)
+{
+	var ops;
+	
+	ops = getOperations();
+	func();
+	debug("operation consumed: " + (getOperations() - ops));
+}
+
 function ft_array_indexOf(@array, item, array_size)
 {
 	/*
@@ -15,15 +24,6 @@ function ft_array_indexOf(@array, item, array_size)
 	return -1;
 }
 
-function ft_array_indexOf(@array, item)
-{
-	/*
-	* This function will return the first position of "item" find in
-	* array parameter
-	*/
-	return ft_array_indexOf(array, item, count(array));
-}
-
 function ft_inArray(@array, item, size)
 {
 	/*
@@ -35,15 +35,6 @@ function ft_inArray(@array, item, size)
 		if (array[size] == item) return true;
 	}
 	return false;
-}
-
-function ft_inArray(@array, item)
-{
-	/*
-	* This function return true of item is
-	* in "array", else it will return false
-	*/
-	return ft_inArray(array, item, count(array));
 }
 
 function ft_arraySort(array, greaterThan)
@@ -60,13 +51,15 @@ function ft_arraySort(array, greaterThan)
 	var arrayLeft;
 	var less  = [];
 	var more  = [];
+	var value;
 
 	pivot = array[0];
 	arrayLeft = count(array);
 
-	while(arrayLeft--)
+	while (arrayLeft--)
 	{
-		push(greaterThan(array[i], pivot) ? more : less, array[i]);	
+		value  = array[arrayLeft];
+		push(greaterThan(value, pivot) ? more : less, value);
 	}
 
 	less = ft_arraySort(less, greaterThan);
@@ -76,38 +69,6 @@ function ft_arraySort(array, greaterThan)
 	pushAll(less, more);
 	
 	return less;
-}
-
-function ft_array_sortByLife(@array, size)
-{
-	/*
-	** this function sort the array who
-	** contains leeks id in the order of
-	** the weeker to the stronger
-	** in other words the first value will be
-	** the weaker one
-	*/
-	var result = [];
-	var leek;
-	var leekLife;
-	var pivotLife;
-
-	pivotLife = getLife(array[0]);
-	while (size--)
-	{
-		leek = array[size];
-		leekLife = getLife(leek);
-		if (leekLife > pivotLife)
-		{
-			push(result, leek);
-		}
-		else
-		{
-			insert(result, leek, 0);
-			pivotLife = result[0];
-		}
-	}
-	return result;
 }
 
 function ft_array_unique(@array)
