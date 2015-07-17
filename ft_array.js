@@ -99,11 +99,11 @@ function ft_array_sortByLife(@array, size)
 		leekLife = getLife(leek);
 		if (leekLife > pivotLife)
 		{
-			push(array, leek);
+			push(result, leek);
 		}
 		else
 		{
-			insert(array, leek, 0);
+			insert(result, leek, 0);
 		}
 	}
 	return result;
