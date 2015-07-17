@@ -1,32 +1,5 @@
 include("ft_effect_count");
 
-function ft_weapon_fire(weapon, enemy, shoots)
-{
-	/*
-	* This function actualy shoot with the weapon on enemy
-	* it return the number of success shoot
-	*/
-	var sucess;
-	var weaponCost;
-	var tp;
-
-	if (weapon != getWeapon())
-	{
-		setWeapon(weapon);
-	}
-	sucess = 0;
-	tp = getTP();
-	weaponCost = getWeaponCost(weapon);
-	while ((shoots--) && (tp -= weaponCost > weaponCost))
-	{
-		if (useWeapon(enemy) == USE_SUCCESS)
-		{
-			sucess++;
-		}
-	}
-	return sucess;
-}
-
 function ft_weapon_estimate_dmg(weapon, leek, shoots)
 {
 	/*
@@ -73,3 +46,54 @@ function ft_can_use_weapon(weapon, leek, cell)
     else if (!lineOfSight(cell, lCell)) return false;
     return true;
 }
+
+function ft_weapon_switchToNextEnemy(@enemy)
+{
+	/*
+	** this function change the value of "enemy"
+	** given in a pointer: by the next reachable enemy
+	** ( the weaker one )
+	*/
+	var enemies = [];
+
+	enemies = ft_weapon_getEnemiesInRange();
+	if (!count(enemies))
+	{
+		return false;
+	}
+	enemies = ft_array_sortByLife(enemies, count(enemies));
+	enemy = enemies[0];
+	return true;
+}
+
+function ft_weapon_fire(weapon, enemy, shoots)
+{
+	/*
+	** this function actualy shoot with the weapon on enemy
+	** it return the number of success shoot
+	*/
+	var sucess;
+	var weaponCost;
+	var tp;
+
+	if (weapon != getWeapon())
+	{
+		setWeapon(weapon);
+	}
+	sucess = 0;
+	tp = getTP();
+	weaponCost = getWeaponCost(weapon);
+	while ((shoots--) && (tp -= weaponCost > weaponCost))
+	{
+		if (useWeapon(enemy) == USE_SUCCESS)
+		{
+			sucess++;
+		}
+		if (!isAlive(enemy))
+		{
+			ft_weapon_switchToNextEnemy(enemy);
+		}
+	}
+	return sucess;
+}
+
