@@ -1,11 +1,3 @@
-function ft_debug_operations(@func)
-{
-	var ops;
-	
-	ops = getOperations();
-	func();
-	debug("operation consumed: " + (getOperations() - ops));
-}
 
 function ft_array_indexOf(@array, item, array_size)
 {
@@ -59,7 +51,7 @@ function ft_arraySort(array, greaterThan)
 	while (arrayLeft--)
 	{
 		value  = array[arrayLeft];
-		push(greaterThan(value, pivot) ? more : less, value);
+		push(greaterThan(value, pivot) ? more : less, value);	
 	}
 
 	less = ft_arraySort(less, greaterThan);

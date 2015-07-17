@@ -1,5 +1,4 @@
-include('ft_array')
-include('ft_weapon')
+include("ft_array");
 
 function ft_getAdjacentsCells(cell)
 {
@@ -22,8 +21,7 @@ function ft_getAdjacentsCells(cell)
 	return adj;
 }
 
-
-function ft_getReachableMap(@next, @map, @queue, cell, @ignore)
+function ft_getReachableMap(@next, @map, @queue, cell, @ignore, @MP)
 {
 	/*
 	* Returns map
@@ -34,11 +32,11 @@ function ft_getReachableMap(@next, @map, @queue, cell, @ignore)
 
 	nextLeft = count(next);
 	while (nextLeft--) {
-		nextCell = next[i];
+		nextCell = next[nextLeft];
 		nextCellContent = getCellContent(nextCell);
 		if (nextCellContent === CELL_OBSTACLE);
-		else if (nextCellContent === CELL_PLAYER));
-		else if (!inArray(ignore, getLeekOnCell(nextCell));
+		else if (nextCellContent === CELL_PLAYER);
+		else if (!inArray(ignore, getLeekOnCell(nextCell)));
 		else if ((map[nextCell] === -1) || (map[nextCell] > map[cell] + 1));
 		else
 		{
@@ -50,6 +48,7 @@ function ft_getReachableMap(@next, @map, @queue, cell, @ignore)
 		}
 	}
 }
+
 
 function ft_getReachableCells(cell, MP, ignore)
 {
@@ -70,9 +69,9 @@ function ft_getReachableCells(cell, MP, ignore)
 	{
 		cell = shift(queue);
 		next = ft_getAdjacentsCells(cell);
-		ft_getReachableMap(next, map, queue, cell, ignore);
+		ft_getReachableMap(next, map, queue, cell, ignore, MP);
 	}
-	remove(map, ft_array_indexOf(map, -1));
+	remove(map, ft_array_indexOf(map, -1, count(map)));
 	return walk;
 }
 
@@ -91,34 +90,31 @@ function ft_getSafeCells(cell, MP)
 	*/
 	var safe;
 	var next;
-
 	var reachable;
 	var weapon;
 	var ignore;
+	var target;
+	var ccell;
 
-	var cell
-	var target
-
+	/*
 	safe = ft_getReachableCells(cell, MP, [getLeek()]);
-
 	for (var enemy in getAliveEnemies()) 
 	{
 		ignore = subArray(next, 0, search(next, enemy));
 		reachable = ft_getReachableCellsBy(enemy, ignore);
 		weapon = getWeapon(enemy);
-
-		for (cell in reachable) 
+		for (ccell in reachable) 
 		{
 			for (target in safe)
 			{
-				if (ft_can_use_weapon(weapon, leek, cell)) 
+				if (ft_can_use_weapon(weapon, leek, ccell)) 
 				{
 					removeElement(safe, target);
 				}
 			}
 		}
 	}
-
 	mark(safe, COLOR_GREEN);
 	return safe;
+	*/
 }

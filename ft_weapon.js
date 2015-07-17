@@ -1,4 +1,5 @@
 include("ft_effect_count");
+include("ft_array");
 
 function ft_weapon_estimate_dmg(weapon, leek, shoots)
 {
@@ -120,4 +121,3 @@ function ft_weapon_fire(weapon, enemy, shoots)
 	}
 	return sucess;
 }
-
