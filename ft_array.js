@@ -135,7 +135,7 @@ function ft_array_unique(@array)
 	return result;
 }
 
-function ft_array_sortByLifeSorter(@array, @pivot, @leek)
+function ft_array_sortByLifeSorter(@array, @pivot, @leek, @result)
 {
 	/*
 	** this is an intenal function: do not use directly
@@ -145,18 +145,19 @@ function ft_array_sortByLifeSorter(@array, @pivot, @leek)
 	var leekLife;
 
 	leekLife = getLife(leek);
-	if (leekLife > pivotLife)
+	if (leekLife > pivot)
 	{
 		push(result, leek);
 	}
 	else
 	{
 		insert(result, leek, 0);
-		pivotLife = result[0];
+		pivot = result[0];
 	}
 }
 
 function ft_array_sortByLife(@array, size)
+{
 	/*
 	** this function sort the array who
 	** contains leeks id in the order of
@@ -184,7 +185,7 @@ function ft_array_sort(@array, size, pivot, sorter)
 	while (size--)
 	{
 		leek = array[size];
-		sorter(array, pivotValue, leek);
+		sorter(array, pivotValue, leek, result);
 	}
 	return result;
 }
