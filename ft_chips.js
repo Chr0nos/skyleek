@@ -17,7 +17,7 @@ function ft_chips_getChipByEffect(effect)
 	n = count(equiped_chips);
 	while (n--)
 	{
-		cchip = effect_chips[n];
+		cchip = equiped_chips[n];
 		if (ft_effect_count(cchip, effect, 2))
 		{
 			push(effect_chips, cchip);
