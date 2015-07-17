@@ -77,3 +77,28 @@ function ft_arraySort(array, greaterThan)
 	
 	return less;
 }
+
+function ft_array_unique(@array)
+{
+	/*
+	** this method will return a new array
+	** with no doubles values
+	** example: array = ft_array_unique(array);
+	*/
+	var result = [];
+	var pos;
+	var n;
+	var v;
+
+	pos = 0;
+	n = count(array);
+	while (n--)
+	{
+		v = array[n];
+		if (!inArray(result, v))
+		{
+			result[pos++] = v;
+		}
+	}
+	return result;
+}
