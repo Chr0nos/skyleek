@@ -78,24 +78,30 @@ function ft_move_post(enemy)
 	/*
 	** this function describe the movement policy after gun use
 	** current policy:
-	** 1: if enemy life is <= 100 : do nothing (stay where we are)
+	** 1: if enemy life is lower than minimum damage
 	** 2: if life is below 100 : move away
 	** 3: if we are on the same line of enemy and he has a linar gun:
 	**    -> move to non linear
 	** il all other cases: dont move
 	*/
 	var enemy_tp;
-	var enemy_weapon;
-	
+	var shoots;
+	var lifePc;
+	var dmg;
+
 	enemy_tp = getTP(enemy);
-	enemy_weapon = getWeapon(enemy);
+	shoots = floor(getTP() / getWeaponCost(getWeapon()));
+	dmg = ft_weapon_estimate_dmg(getWeapon(), getLeek(), shoots);
+	lifePc = getLife() / getTotalLife() * 100;
+
 	if (!getMP()) return;
-	else if (getLife(enemy) <= 100) return;
-	else if (getLife() < 200) moveAwayFrom(enemy);
+	else if (getLife(enemy) <= dmg) return;
+	else if (lifePc < 45) moveAwayFrom(enemy);
 	/*
 	else if (ft_weapon_has_linear(enemy))
 	{
-		// move to a non linear cell !
+		//move to a non linear cell ! (todo)
 	}
 	*/
 }
+
