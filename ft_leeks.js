@@ -60,3 +60,8 @@ function ft_getNextTurn()
 	}
 	return leeks;
 }
+
+function ft_getLifePc(leek)
+{
+	return getLife(leek) / getTotalLife(leek) * 100;
+}

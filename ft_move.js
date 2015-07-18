@@ -1,5 +1,6 @@
 include("ft_weapon");
 include("ft_array");
+include("ft_leeks");
 
 function ft_move_is_walkable(cell)
 {
@@ -55,16 +56,30 @@ function ft_move_pre(weapons, enemy, enemy_cell)
 	** note: all "run away" are marked as a simple "return" here
 	** in fact the runAwayFrom(leek) is performed in ft_move_post
 	** to let my leek use his weapon
+	** it's IMPORTANT that this function do not get too close
+	** to the enemy
 	*/
 	var distance;
+	var minDistance;
+	var moveCases;
+	var mp;
+	var weaponNum;
 
-	if (!getMP()) return;
+	mp = getMP();
+	weapons = getWeapons(getLeek());
+	weaponNum = count(weapons);
+	ft_array_sort(weapons, weaponNum, getWeaponMaxScope, ft_array_sortGeneric);
+	minDistance = weapons[weaponNum - 1];
+
+	if (!mp) return;
 	else if (getLife(enemy) <= 100) moveToward(enemy);
-	else if (getLife() < 200) return;
+	else if (ft_getLifePc(getLeek()) < 40) return;
 	distance = getDistance(getCell(), enemy_cell);
-	if (distance > 7)
+	if (distance > minDistance)
 	{
-		moveToward(enemy);
+		moveCases = distance - minDistance;
+		if (moveCases > mp) moveCases = mp;
+		moveToward(enemy, moveCases);
 	}
 	else if (distance <= 1) moveAwayFrom(enemy, 1);
 	else if ((!isOnSameLine(getCell(), enemy_cell)) && (inArray(weapons, WEAPON_LASER)))
@@ -84,14 +99,10 @@ function ft_move_post(enemy)
 	**    -> move to non linear
 	** il all other cases: dont move
 	*/
-	var enemy_tp;
-	var shoots;
 	var lifePc;
 	var dmg;
 
-	enemy_tp = getTP(enemy);
-	shoots = floor(getTP() / getWeaponCost(getWeapon()));
-	dmg = ft_weapon_estimate_dmg(getWeapon(), getLeek(), shoots);
+	dmg = ft_weapon_estimate_next_shoots(enemy, getLeek());
 	lifePc = getLife() / getTotalLife() * 100;
 
 	if (!getMP()) return;

@@ -1,15 +1,16 @@
 include("ft_effect_count");
 include("ft_array");
 
-function ft_weapon_estimate_dmg(weapon, leek, shoots)
+function ft_weapon_estimate_dmg(weapon, shooter, leek, shoots)
 {
 	/*
-	** Return the minimal weapon damage of weapon
-	** min to reduce fail risk, dont be too optimist !
-	** thanks to murphy's law
-	** note: actualy it dont take care about poison/burn effect
-	** mode = 1 for minimal damages (local leek)
-	** mode = 2 for maximal damages (enemy)
+	* Return the minimal weapon damage of weapon
+	* min to reduce fail risk, dont be too optimist !
+	* thanks to murphy's law
+	* note: actualy it dont take care about poison/burn effect
+	* mode = 1 for minimal damages (local leek)
+	* mode = 2 for maximal damages (enemy)
+	** leek is the target
 	*/
 	var coef;
 	var dmg;
@@ -24,16 +25,28 @@ function ft_weapon_estimate_dmg(weapon, leek, shoots)
 	if (shoots > shootsAvailables) shoots = shootsAvailables;
 	coef = 1;
 	dmg = ft_effect_count(weapon, EFFECT_DAMAGE, mode);
-	dmg *= (1 + getStrength() / 100) * (1 - getRelativeShield(leek) / 100) * coef;
+	dmg *= (1 + getStrength(shooter) / 100) * (1 - getRelativeShield(leek) / 100) * coef;
 	dmg *= shoots;
 	dmg -= getAbsoluteShield(leek);
 	return dmg;	
 }
 
+function ft_weapon_estimate_next_shoots(leek, target)
+{
+	var leekShoots;
+	var weapon;
+
+	weapon = getWeapon(leek);
+	if (!weapon) return 0;
+	leekShoots = floor(getTP(leek) / getWeaponCost(weapon));
+	if (!leekShoots) return 0;
+	return ft_weapon_estimate_dmg(weapon, leek, target, leekShoots);
+}
+
 function ft_can_use_weapon(weapon, leek, cell)
 {
     /*
-    ** Return true if leek can use weapon on cell (else return false)
+    * Return true if leek can use weapon on cell (else return false)
     */
     var lCell;
     var dist;
@@ -60,6 +73,7 @@ function ft_weapon_getEnemiesInRange()
 	var leek;
 
 	enemies = getAliveEnemies();
+	n = count(enemies);
 	while (n--)
 	{
 		leek = enemies[n];
@@ -121,3 +135,4 @@ function ft_weapon_fire(weapon, enemy, shoots)
 	}
 	return sucess;
 }
+
