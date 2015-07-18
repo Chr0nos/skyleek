@@ -52,7 +52,8 @@ function ft_getOrder(@leeksOrder)
 function ft_getNextTurn()
 {
 	/*
-	** Return id of the next leek
+	** Return an array
+	** in the order of next to farest
 	*/
 	var leeks;
 	
