@@ -1,5 +1,6 @@
 include("ft_array");
 include("ft_weapon");
+include("ft_leeks");
 
 function ft_getAdjacentsCells(cell)
 {
@@ -90,13 +91,14 @@ function ft_getSafeCells(cell, MP)
 	** Returns an array of all id safe cells
 	*/
 	var safe;
-	var next;
+	var next = [];
 	var reachable;
 	var weapon;
 	var ignore;
 	var target;
 	var cCell;
 
+	next = ft_getNextTurn();
 	safe = ft_getReachableCells(cell, MP, [getLeek()]);
 	for (var enemy in getAliveEnemies()) 
 	{
@@ -114,6 +116,5 @@ function ft_getSafeCells(cell, MP)
 			}
 		}
 	}
-
 	return safe;
 }
