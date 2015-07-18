@@ -41,7 +41,10 @@ function ft_getOrder(@leeksOrder)
 	/*
 	** Return the order of leeks
 	*/
-	if(isEmpty(leeksOrder)) ft_leeksInit();
+	if (isEmpty(leeksOrder))
+	{
+		ft_leeksInit(leeksOrder);
+	}
 	
 	return leeksOrder;
 }
@@ -51,8 +54,9 @@ function ft_getNextTurn()
 	/*
 	** Return id of the next leek
 	*/
-	var leeks = ft_getOrder();
+	var leeks;
 	
+	leeks = ft_getOrder(leeks);
 	while(leeks[0] !== getLeek()) 
 	{
 		push(leeks, shift(leeks));
@@ -60,4 +64,3 @@ function ft_getNextTurn()
 	
 	return leeks;
 }
-
