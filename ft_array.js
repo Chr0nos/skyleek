@@ -1,9 +1,17 @@
+function ft_debug_operations(@func)
+{
+	var ops;
+	
+	ops = getOperations();
+	func();
+	debug("operation consumed: " + (getOperations() - ops));
+}
 
 function ft_array_indexOf(@array, item, array_size)
 {
 	/*
-	** This function will return the first position of "item" find in
-	** array parameter. You have to fill the array size
+	* This function will return the first position of "item" find in
+	* array parameter. You have to fill the array size
 	*/
 	var i;
 
@@ -19,8 +27,8 @@ function ft_array_indexOf(@array, item, array_size)
 function ft_inArray(@array, item, size)
 {
 	/*
-	** This function return true of item is
-	** in "array", else it will return false. You have to fill the array size
+	* This function return true of item is
+	* in "array", else it will return false. You have to fill the array size
 	*/
 	while (size--)
 	{
@@ -32,7 +40,7 @@ function ft_inArray(@array, item, size)
 function ft_arraySort(array, greaterThan)
 {
 	/*
-	** Sort array in order of growth
+	* Sort array in order of growth
 	*/
 	if(count(array) <= 1)
 	{
@@ -88,23 +96,44 @@ function ft_array_unique(@array)
 	return result;
 }
 
-function ft_array_sortByLifeSorter(@array, @pivot, @leek, @result)
+function ft_array_sortGeneric(@array, @pivot, @item, @result, subPivot)
 {
 	/*
-	** this is an intenal function: do not use directly
-	** this function is called by ft_array_sortByLife
-	** 
+	** this is the generic array sorter
+	** it will call pivot(item) on each iteration
+	** to don't use a pivot use the sorter ft_array_sorterRawValue
+	** do not use it directly, pass it as an argument to
+	** "ft_array_sort"
 	*/
-	var leekLife;
+	var value;
 
-	leekLife = getLife(leek);
-	if (leekLife > pivot)
+	value = subPivot(item);
+	if (value >= pivot)
 	{
-		push(result, leek);
+		push(result, item);
 	}
 	else
 	{
-		insert(result, leek, 0);
+		insert(result, item, 0);
+		pivot = result[0];
+	}
+}
+
+function ft_array_sorterRawValue(@array, @pivot, @value, @result, subPivot)
+{
+	/*
+	** this sorter is used by ft_array_sort
+	** it sort raw values (int)
+	** the subPivot variable is not used in this code
+	** it's just here for compatibilty
+	*/
+	if (value >= pivot)
+	{
+		push(result, value);
+	}
+	else
+	{
+		insert(result, value, 0);
 		pivot = result[0];
 	}
 }
@@ -118,7 +147,15 @@ function ft_array_sortByLife(@array, size)
 	** in other words the first value will be
 	** the weaker one
 	*/
-	return ft_array_sort(@array, size, getLife, ft_array_sortByLifeSorter);
+	return ft_array_sort(@array, size, getLife, ft_array_sortGeneric);
+}
+
+function ft_array_sortByChipCost(@array, size)
+{
+	/*
+	** sort array of chips by the less cost to the more expanssive cost
+	*/
+	return ft_array_sort(@array, size, getChipCost, ft_array_sortGeneric);
 }
 
 function ft_array_sort(@array, size, pivot, sorter)
@@ -126,19 +163,23 @@ function ft_array_sort(@array, size, pivot, sorter)
 	/*
 	** this function sort an array
 	** pivot = pointer of functoin to get something about to compare
+	**       -> in the loop pivot will change into array[0]
+	** subPivot = same a pivot but called on each item in the list to sort
 	** using "sorter" as a pointer of function
 	** sorter will receive: "array, pivotValue, leek"
 	** example: ft_array_sort(array, 64, getLife, ft_array_sortByLifeSorter)
 	*/
 	var result = [];
-	var leek;
+	var item;
 	var pivotValue;
+	var subPivot;
 
+	subPivot = pivot;
 	pivotValue = pivot(array[0]);
 	while (size--)
 	{
-		leek = array[size];
-		sorter(array, pivotValue, leek, result);
+		item = array[size];
+		sorter(array, pivotValue, item, result, subPivot);
 	}
 	return result;
 }
