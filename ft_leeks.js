@@ -7,7 +7,7 @@ function ft_compareOrder(leekA, leekB)
 	/*
 	** Compare order of two leeks and return the first of two
 	*/
-	if(getFrequency(leekA) === getFrequency(leekB)) return leekA < leekB;
+	if (getFrequency(leekA) === getFrequency(leekB)) return leekA < leekB;
 	else return getFrequency(leekA) > getFrequency(leekB);
 }
 
@@ -18,21 +18,18 @@ function ft_leeksInit(@leeksOrder)
 	*/
 	var allies  = ft_arraySort(getAllies(),  ft_compareOrder);
 	var enemies = ft_arraySort(getEnemies(), ft_compareOrder);
-	
 	var team;
 	
 	team = ft_compareOrder(allies[count(allies) - 1], enemies[count(enemies) - 1]);
 	
-	while(!isEmpty(allies) || !isEmpty(enemies)) 
+	while (!isEmpty(allies) || !isEmpty(enemies)) 
 	{
-		if(!isEmpty(team ? allies : enemies))
+		if (!isEmpty(team ? allies : enemies))
 		{
 			push(ft_getOrder, pop(team ? allies : enemies));
 		}
-		
 		team = !team;
 	}
-	
 	return leeksOrder;
 }
 
@@ -45,7 +42,6 @@ function ft_getOrder(@leeksOrder)
 	{
 		ft_leeksInit(leeksOrder);
 	}
-	
 	return leeksOrder;
 }
 
@@ -56,12 +52,11 @@ function ft_getNextTurn()
 	** in the order of next to farest
 	*/
 	var leeks;
-	
+
 	leeks = ft_getOrder(leeks);
 	while(leeks[0] !== getLeek()) 
 	{
 		push(leeks, shift(leeks));
-	}	
-	
+	}
 	return leeks;
 }
