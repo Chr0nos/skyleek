@@ -1,4 +1,5 @@
 include("ft_array");
+include("ft_weapon");
 
 function ft_getAdjacentsCells(cell)
 {
