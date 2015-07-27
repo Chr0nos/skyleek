@@ -2,19 +2,29 @@ include("ft_array");
 include("ft_weapon");
 include("ft_leeks");
 
+function ft_cell_isWalkable(cell)
+{
+	var content;
+
+	content = getCellContent(cell);
+	if ((cell < 0) || (cell > 613)) return false;
+	else if (content == CELL_OBSTACLE) return false;
+	else if (content == CELL_PLAYER) return false;
+	return true;
+}
+
 function ft_getAdjacentsCells(cell)
 {
 	/*
 	** Returns an array of all id adjacent cells
 	*/
-	var adj;
+	var adj = [];
 	var x;
 	var y;
 	var n;
 	var theoric_cells = [];
 	var ccell;
 
-	adj = [];
 	x   = getCellX(cell);
 	y   = getCellY(cell);
 	theoric_cells = [ getCellFromXY(x, y + 1), getCellFromXY(x, y -1 ),
@@ -23,9 +33,7 @@ function ft_getAdjacentsCells(cell)
 	while (n--)
 	{
 		ccell = theoric_cells[n];
-		if ((ccell < 0) || (ccell > 613));
-		else if (cell != ccell);
-		else
+		if (ft_cell_isWalkable(ccell))
 		{
 			push(adj, ccell);
 		}
