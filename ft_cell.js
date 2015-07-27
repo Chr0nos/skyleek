@@ -10,16 +10,26 @@ function ft_getAdjacentsCells(cell)
 	var adj;
 	var x;
 	var y;
+	var n;
+	var theoric_cells = [];
+	var ccell;
 
 	adj = [];
 	x   = getCellX(cell);
 	y   = getCellY(cell);
-
-	if (cell = getCellFromXY(x - 1, y)) push(adj, cell);
-	else if (cell = getCellFromXY(x + 1, y)) push(adj, cell);
-	else if (cell = getCellFromXY(x, y - 1)) push(adj, cell);
-	else if (cell = getCellFromXY(x, y + 1)) push(adj, cell);
-	
+	theoric_cells = [ getCellFromXY(x, y + 1), getCellFromXY(x, y -1 ),
+					  getCellFromXY(x + 1, y), getCellFromXY(x - 1, y) ];
+	n = 4;
+	while (n--)
+	{
+		ccell = theoric_cells[n];
+		if ((ccell < 0) || (ccell > 613));
+		else if (cell != ccell);
+		else
+		{
+			push(adj, ccell);
+		}
+	}
 	return adj;
 }
 
