@@ -45,19 +45,18 @@ function ft_getReachableMap(@next, @map, @queue, cell, @ignore, @MP)
 {
 	/*
 	** Returns map
+	** ignore is an array of leeks ids
 	*/
 	var nextLeft;
 	var nextCell;
 	var nextCellContent;
 
 	nextLeft = count(next);
-	while (nextLeft--) {
+	while (nextLeft--)
+	{
 		nextCell = next[nextLeft];
-		nextCellContent = getCellContent(nextCell);
-		if (nextCellContent === CELL_OBSTACLE);
-		else if (nextCellContent === CELL_PLAYER);
+		if (!ft_cell_isWalkable(nextCell));
 		else if (!inArray(ignore, getLeekOnCell(nextCell)));
-		else if ((map[nextCell] === -1) || (map[nextCell] > map[cell] + 1));
 		else
 		{
 			map[nextCell] = map[cell] + 1;
@@ -70,7 +69,7 @@ function ft_getReachableMap(@next, @map, @queue, cell, @ignore, @MP)
 }
 
 
-function ft_getReachableCells(cell, MP, ignore)
+function ft_getReachableCells(cell, @MP, @ignore)
 {
 	/*
 	** Returns an array of all id reachable cells
