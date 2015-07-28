@@ -4,8 +4,15 @@ include("ft_leeks");
 
 function ft_cell_isWalkable(cell)
 {
+	/*
+	** this function return true if the cell is walkable by a leek
+	** if take care about obstacles, players, and if the cell
+	** is valid on the cells map
+	** in other cases: the function will return false
+	*/
 	var content;
 
+	if (cell === null) return false;
 	content = getCellContent(cell);
 	if ((cell < 0) || (cell > 613)) return false;
 	else if (content == CELL_OBSTACLE) return false;
@@ -39,6 +46,33 @@ function ft_getAdjacentsCells(cell)
 		}
 	}
 	return adj;
+}
+
+function ft_cell_getReachableCells(@leekCell, mp, @cells)
+{
+	/*
+	** leekCell = the cell to start from, it's a const (not edited by the function)
+	** mp = movement points (for partials move of the leek ?)
+	** cells = the array to fill: because this function is recursive:
+	** tmp = a temporary array
+	**         it don't "return" the array to optimise the code
+	** it's strongly recomended to run ft_array_unique on the array
+	** because you will have doubles in the array
+	*/
+	var n;
+	var tmp = [];
+
+	if (mp--)
+	{
+		pushAll(tmp, ft_getAdjacentsCells(leekCell));
+		n = count(tmp);
+		while (n--)
+		{
+			ft_cell_getReachableCells(tmp[n], mp, cells);
+			pushAll(cells, tmp);
+		}
+	}
+	return cells;
 }
 
 function ft_getReachableMap(@next, @map, @queue, cell, @ignore, @MP)
