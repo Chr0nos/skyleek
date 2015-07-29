@@ -34,7 +34,7 @@ function ft_getAdjacentsCells(cell)
 
 	x   = getCellX(cell);
 	y   = getCellY(cell);
-	theoric_cells = [ getCellFromXY(x, y + 1), getCellFromXY(x, y -1 ),
+	theoric_cells = [ getCellFromXY(x, y + 1), getCellFromXY(x, y - 1 ),
 					  getCellFromXY(x + 1, y), getCellFromXY(x - 1, y) ];
 	n = 4;
 	while (n--)
@@ -75,6 +75,15 @@ function ft_cell_getReachableCells(@leekCell, mp, @cells)
 	return cells;
 }
 
+function ft_cell_getShootAera(leek)
+{
+	var cells = [];
+	var weapon = getWeapon(leek);
+	var scope = getWeaponMaxScope(weapon);
+
+	return ft_cell_getReachableCells(getCell(leek), getMP(leek) + scope, cells);
+}
+
 function ft_getReachableMap(@next, @map, @queue, cell, @ignore, @MP)
 {
 	/*
@@ -101,7 +110,6 @@ function ft_getReachableMap(@next, @map, @queue, cell, @ignore, @MP)
 		}
 	}
 }
-
 
 function ft_getReachableCells(cell, @MP, @ignore)
 {
