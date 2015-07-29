@@ -1,15 +1,23 @@
 include("ft_cell");
 include("ft_array");
 
-function ft_show_LeekMoves(leek, color, @acm)
+function ft_show_LeekMoves(leeks, color, @acm)
 {
 	var cells = [];
+	var ignore = [];
 
-	ft_cell_getReachableCells(getCell(leek), getMP(leek), cells, acm, []);
-	ft_array_unique(cells);
+	for (var leek in leeks)
+	{
+		ft_cell_getReachableCells(getCell(leek), getMP(leek), cells, acm, ignore);
+	}
 	mark(cells, color);
 }
 
+/**
+colore en rouge les cases ou les enemies peuvent faire feu
+@param acm AdjacetsCellsMap pré-calculée
+@return rien
+*/
 function ft_show_dangerous_cells(acm)
 {
 	var cells = [];
@@ -26,7 +34,7 @@ function ft_show_dangerous_cells(acm)
 
 function ft_show_colors(@enemy, @acm)
 {
-	ft_show_LeekMoves(getLeek(), COLOR_GREEN, acm);
+	ft_show_LeekMoves([getLeek()], COLOR_GREEN, acm);
 	ft_show_dangerous_cells(acm);
-	ft_show_LeekMoves(enemy, getColor(255, 184, 0), acm);
+	ft_show_LeekMoves(getAliveEnemies(), getColor(255, 184, 0), acm);
 }
