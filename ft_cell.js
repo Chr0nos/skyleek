@@ -2,6 +2,10 @@ include("ft_array");
 include("ft_weapon");
 include("ft_leeks");
 
+/**
+@level 21
+@return true si un leek peut s'y rendre, sinon false
+*/
 function ft_cell_isWalkable(cell)
 {
 	/*
@@ -16,7 +20,7 @@ function ft_cell_isWalkable(cell)
 	content = getCellContent(cell);
 	if ((cell < 0) || (cell > 613)) return false;
 	else if (content == CELL_OBSTACLE) return false;
-	else if (content == CELL_PLAYER) return false;
+	//else if (content == CELL_PLAYER) return false;
 	return true;
 }
 
@@ -24,6 +28,7 @@ function ft_getAdjacentsCells(cell)
 {
 	/*
 	** Returns an array of all id adjacent cells
+	** so : maximal 4 items
 	*/
 	var adj = [];
 	var x;
@@ -48,7 +53,31 @@ function ft_getAdjacentsCells(cell)
 	return adj;
 }
 
-function ft_cell_getReachableCells(@leekCell, mp, @cells)
+/**
+@level 21
+*/
+function ft_cell_getAllAdjacentsCells()
+{
+	var cell;
+	var cells = [];
+
+	cell = 614;
+	while (cell--)
+	{
+		cells[cell] = ft_getAdjacentsCells(cell);
+	}
+	return cells;
+}
+
+/**
+@ops variables
+@param leekCell la cellule de dépard
+@param mp le radius (généralement getMP pour un leek)
+@param acm la AdjacentsCellsMap (pré-calculée)
+@param cells array de cells, vide à l'entrée de la fonction
+@return rien le retour est dans le array cells
+*/
+function ft_cell_getReachableCells(@leekCell, mp, @cells, @acm)
 {
 	/*
 	** leekCell = the cell to start from, it's a const (not edited by the function)
@@ -56,31 +85,32 @@ function ft_cell_getReachableCells(@leekCell, mp, @cells)
 	** cells = the array to fill: because this function is recursive:
 	** tmp = a temporary array
 	**         it don't "return" the array to optimise the code
+	** acm = the pre-computed cells map (Adjacents Cells Map)
 	** it's strongly recomended to run ft_array_unique on the array
 	** because you will have doubles in the array
 	*/
 	var n;
-	var adjacentCells = [];
+	var adjacentCells;
 
 	if (mp--)
 	{
-		adjacentCells = ft_getAdjacentsCells(leekCell);
+		adjacentCells = acm[leekCell];
 		n = count(adjacentCells);
 		while (n--)
 		{
-			ft_cell_getReachableCells(adjacentCells[n], mp, cells);
+			ft_cell_getReachableCells(adjacentCells[n], mp, cells, acm);
 		}
 		pushAll(cells, adjacentCells);
 	}
 }
 
-function ft_cell_getShootAera(leek)
+function ft_cell_getShootAera(leek, acm)
 {
 	var cells = [];
 	var weapon = getWeapon(leek);
 	var scope = getWeaponMaxScope(weapon);
 
-	return ft_cell_getReachableCells(getCell(leek), getMP(leek) + scope, cells);
+	return ft_cell_getReachableCells(getCell(leek), getMP(leek) + scope, cells, acm);
 }
 
 function ft_getReachableMap(@next, @map, @queue, cell, @ignore, @MP)
