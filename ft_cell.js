@@ -35,16 +35,18 @@ function ft_getAdjacentsCells(cell)
 	var y;
 	var n;
 	var theoric_cells = [];
-	var ccell;
 
 	x   = getCellX(cell);
 	y   = getCellY(cell);
-	theoric_cells = [ getCellFromXY(x, y + 1), getCellFromXY(x, y - 1 ),
-					  getCellFromXY(x + 1, y), getCellFromXY(x - 1, y) ];
-	n = 4;
-	while (n--)
+
+	push(theoric_cells, getCellFromXY(x, y + 1));
+	push(theoric_cells, getCellFromXY(x, y - 1));
+	push(theoric_cells, getCellFromXY(x + 1, y));
+	push(theoric_cells, getCellFromXY(x - 1, y));
+
+	n = count(theoric_cells);
+	for (var ccell in theoric_cells)
 	{
-		ccell = theoric_cells[n];
 		if (ft_cell_isWalkable(ccell))
 		{
 			push(adj, ccell);
@@ -75,9 +77,10 @@ function ft_cell_getAllAdjacentsCells()
 @param mp le radius (généralement getMP pour un leek)
 @param acm la AdjacentsCellsMap (pré-calculée)
 @param cells array de cells, vide à l'entrée de la fonction
+@param ignore array de cells à ignorer: passer [] (array vide) a la fonction
 @return rien le retour est dans le array cells
 */
-function ft_cell_getReachableCells(@leekCell, mp, @cells, @acm)
+function ft_cell_getReachableCells(@leekCell, mp, @cells, @acm, @ignore)
 {
 	/*
 	** leekCell = the cell to start from, it's a const (not edited by the function)
@@ -89,18 +92,18 @@ function ft_cell_getReachableCells(@leekCell, mp, @cells, @acm)
 	** it's strongly recomended to run ft_array_unique on the array
 	** because you will have doubles in the array
 	*/
-	var n;
-	var adjacentCells;
 
 	if (mp--)
 	{
-		adjacentCells = acm[leekCell];
-		n = count(adjacentCells);
-		while (n--)
+		for (var cell in acm[leekCell])
 		{
-			ft_cell_getReachableCells(adjacentCells[n], mp, cells, acm);
+			if (!ignore[cell])
+			{
+				push(cells, cell);
+				ignore[cell] = true;
+			}
+			ft_cell_getReachableCells(cell, mp, cells, acm, ignore);
 		}
-		pushAll(cells, adjacentCells);
 	}
 }
 
@@ -110,7 +113,7 @@ function ft_cell_getShootAera(leek, acm)
 	var weapon = getWeapon(leek);
 	var scope = getWeaponMaxScope(weapon);
 
-	return ft_cell_getReachableCells(getCell(leek), getMP(leek) + scope, cells, acm);
+	return ft_cell_getReachableCells(getCell(leek), getMP(leek) + scope, cells, acm, []);
 }
 
 function ft_getReachableMap(@next, @map, @queue, cell, @ignore, @MP)
