@@ -60,19 +60,18 @@ function ft_cell_getReachableCells(@leekCell, mp, @cells)
 	** because you will have doubles in the array
 	*/
 	var n;
-	var tmp = [];
+	var adjacentCells = [];
 
 	if (mp--)
 	{
-		pushAll(tmp, ft_getAdjacentsCells(leekCell));
-		n = count(tmp);
+		adjacentCells = ft_getAdjacentsCells(leekCell);
+		n = count(adjacentCells);
 		while (n--)
 		{
-			ft_cell_getReachableCells(tmp[n], mp, cells);
-			pushAll(cells, tmp);
+			ft_cell_getReachableCells(adjacentCells[n], mp, cells);
 		}
+		pushAll(cells, adjacentCells);
 	}
-	return cells;
 }
 
 function ft_cell_getShootAera(leek)
