@@ -37,7 +37,11 @@ function bubble_goHealAlly(@allys, n, chip)
 	if (leek)
 	{
 		debug("soin de " + getName(leek));
-		moveToward(leek);
+		if (getDistance(getCell(), getCell(leek)) > 3)
+		{
+			moveToward(leek);
+		}
+		else moveAwayFrom(leek, 2);
 		useChip(chip, leek);
 	}
 }
