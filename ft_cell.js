@@ -8,28 +8,35 @@ include("ft_leeks");
 */
 function ft_cell_isWalkable(cell)
 {
-	/*
-	** this function return true if the cell is walkable by a leek
-	** if take care about obstacles, players, and if the cell
-	** is valid on the cells map
-	** in other cases: the function will return false
-	*/
 	var content;
 
-	if (cell === null) return false;
 	content = getCellContent(cell);
-	if ((cell < 0) || (cell > 613)) return false;
-	else if (content == CELL_OBSTACLE) return false;
-	//else if (content == CELL_PLAYER) return false;
+	if (content != CELL_EMPTY) return false;
 	return true;
 }
 
+/**
+renvoi true si la cell est valide
+@level 1
+@return bool
+*/
+function ft_cell_isValid(cell)
+{
+	if (cell === null) return false;
+	if ((cell < 0) || (cell > 613)) return false;
+	return true;
+}
+
+/**
+renvoi les cellules adjacentes directes
+maxium 4 cells
+@level 21
+@ops ~50
+@param cell la cellule
+@return array
+*/
 function ft_getAdjacentsCells(cell)
 {
-	/*
-	** Returns an array of all id adjacent cells
-	** so : maximal 4 items
-	*/
 	var adj = [];
 	var x;
 	var y;
@@ -47,7 +54,7 @@ function ft_getAdjacentsCells(cell)
 	n = count(theoric_cells);
 	for (var ccell in theoric_cells)
 	{
-		if (ft_cell_isWalkable(ccell))
+		if ((ft_cell_isValid(ccell)) && (!isObstacle(ccell)))
 		{
 			push(adj, ccell);
 		}
@@ -56,7 +63,11 @@ function ft_getAdjacentsCells(cell)
 }
 
 /**
+renvois la carte de toutes les cells adjacentes pour chaque cell
+sous la forme de array[cell] = array
 @level 21
+@ops ~30700
+@return array
 */
 function ft_cell_getAllAdjacentsCells()
 {
@@ -72,8 +83,13 @@ function ft_cell_getAllAdjacentsCells()
 }
 
 /**
+permet de récuperer les cellules dans le radius de leekCell
+il est tout à fait possible d'avoir un tableau cells deja pré-remplis
+aux quel cas il est sans doute préferable de peupler le ignore en conséquence
+si vous utilisez plusieures fois cette fonction: re-utilisez le meme ignore
 @ops variables
-@param leekCell la cellule de dépard
+@level 21
+@param leekCell la cellule de dépard (const)
 @param mp le radius (généralement getMP pour un leek)
 @param acm la AdjacentsCellsMap (pré-calculée)
 @param cells array de cells, vide à l'entrée de la fonction
@@ -82,22 +98,13 @@ function ft_cell_getAllAdjacentsCells()
 */
 function ft_cell_getReachableCells(@leekCell, mp, @cells, @acm, @ignore)
 {
-	/*
-	** leekCell = the cell to start from, it's a const (not edited by the function)
-	** mp = movement points (for partials move of the leek ?)
-	** cells = the array to fill: because this function is recursive:
-	** tmp = a temporary array
-	**         it don't "return" the array to optimise the code
-	** acm = the pre-computed cells map (Adjacents Cells Map)
-	** it's strongly recomended to run ft_array_unique on the array
-	** because you will have doubles in the array
-	*/
-
 	if (mp--)
 	{
 		for (var cell in acm[leekCell])
 		{
-			if (!ignore[cell])
+			if (ignore[cell]);
+			else if (!ft_cell_isWalkable(cell)) ignore[cell] = true;
+			else
 			{
 				push(cells, cell);
 				ignore[cell] = true;
@@ -105,15 +112,6 @@ function ft_cell_getReachableCells(@leekCell, mp, @cells, @acm, @ignore)
 			ft_cell_getReachableCells(cell, mp, cells, acm, ignore);
 		}
 	}
-}
-
-function ft_cell_getShootAera(leek, acm)
-{
-	var cells = [];
-	var weapon = getWeapon(leek);
-	var scope = getWeaponMaxScope(weapon);
-
-	return ft_cell_getReachableCells(getCell(leek), getMP(leek) + scope, cells, acm, []);
 }
 
 function ft_getReachableMap(@next, @map, @queue, cell, @ignore, @MP)
