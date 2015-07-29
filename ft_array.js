@@ -71,12 +71,12 @@ function ft_arraySort(array, greaterThan)
 	return less;
 }
 
-function ft_array_unique(@array)
+function ft_array_unique_old(@array)
 {
 	/*
 	** this method will return a new array
 	** with no doubles values
-	** example: array = ft_array_unique(array);
+	** example: array = ft_array_unique_old(array);
 	*/
 	var result = [];
 	var pos;
@@ -94,6 +94,50 @@ function ft_array_unique(@array)
 		}
 	}
 	return result;
+}
+
+function ft_array_countElement(@array, n, @element)
+{
+	/*
+	** return the number of "element" in given array
+	** n = the size of the array
+	*/
+	var count;
+	var value;
+
+	count = 0;
+	while (n--)
+	{
+		value = array[n];
+		if (value == element) count++;
+	}
+	return count;
+}
+
+function ft_array_unique(@array)
+{
+	/*
+	** this function remove all doubles from the
+	** given array, it dont make a new one,
+	** for new array see ft_array_unique_old
+	*/
+	var n;
+	var value;
+	var size;
+
+	size = count(array);
+	n = size;
+	while (n--)
+	{
+		value = array[n];
+		if (ft_array_countElement(array, size, value) > 1)
+		{
+			remove(array, n);
+			size--;
+			n++;
+		}
+	}
+	return array;
 }
 
 function ft_array_sortGeneric(@array, @pivot, @item, @result, subPivot)
@@ -167,7 +211,9 @@ function ft_array_sort(@array, size, pivot, sorter)
 	** subPivot = same a pivot but called on each item in the list to sort
 	** using "sorter" as a pointer of function
 	** sorter will receive: "array, pivotValue, leek"
-	** example: ft_array_sort(array, 64, getLife, ft_array_sortByLifeSorter)
+	** example: ft_array_sort(array, count(array), getLife, ft_array_sortGeneric)
+	** the Generic sorter call the "pivot" function on each item in the array
+	** like: pivot(item) (just this argument)
 	*/
 	var result = [];
 	var item;
@@ -182,4 +228,20 @@ function ft_array_sort(@array, size, pivot, sorter)
 		sorter(array, pivotValue, item, result, subPivot);
 	}
 	return result;
+}
+
+function ft_array_pushAllUniques(@array, @elements)
+{
+	var n;
+	var element;
+
+	n = count(elements);
+	while (n--)
+	{
+		element = elements[n];
+		if (!inArray(array, element))
+		{
+			push(array, element);
+		}
+	}
 }
