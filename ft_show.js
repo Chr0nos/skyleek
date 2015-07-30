@@ -1,6 +1,15 @@
 include("ft_cell");
 include("ft_array");
 
+/**
+affiche les mouvements possibles des leeks passés en parametres
+@level 21
+@ops variables
+@param leeks array des leeks à afficher
+@param color code couleur à utiliser
+@param acm AdjacentsCellsMap pré-calculée array[cells][]
+@return null
+*/
 function ft_show_LeekMoves(leeks, color, @acm)
 {
 	var cells = [];
@@ -17,8 +26,10 @@ function ft_show_LeekMoves(leeks, color, @acm)
 colore en rouge les cases ou les enemies peuvent faire feu
 et en violet les chemin que prendrons probablement les enemis
 pour arriver jusqu'a nous
+@level 21
+@ops variables
 @param acm AdjacetsCellsMap pré-calculée
-@return rien
+@return null
 */
 function ft_show_dangerous_cells(acm)
 {
@@ -34,10 +45,18 @@ function ft_show_dangerous_cells(acm)
 		pushAll(path, getPath(getCell(enemy), getCell()));
 	}
 	mark(cells, COLOR_RED);
+	ft_array_unique(path);
 	mark(path, getColor(255, 0, 255));
 }
 
-function ft_show_colors(@enemy, @acm)
+/**
+fonction d'entrée pour les affichages des couleurs
+@level 21
+@ops variables
+@param acm AdjacetsCellsMap pré-calculée
+@return null
+*/
+function ft_show_colors(@acm)
 {
 	ft_show_LeekMoves([getLeek()], COLOR_GREEN, acm);
 	ft_show_dangerous_cells(acm);

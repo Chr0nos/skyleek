@@ -18,7 +18,7 @@ function main()
 		setWeapon(WEAPON_MAGNUM);
 		adjacentsCellsMap = ft_cell_getAllAdjacentsCells();
 	}
-	ft_show_colors(enemy, adjacentsCellsMap);
+	ft_show_colors(adjacentsCellsMap);
 	if ((turn % 3) == 0) useChip(CHIP_STEROID, getLeek());
 	ft_heal();
 	ft_use_weapons(enemy, enemy_cell);
