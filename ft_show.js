@@ -8,12 +8,12 @@ affiche les mouvements possibles des leeks passés en parametres
 @param leeks array des leeks à afficher
 @param color code couleur à utiliser
 @param acm AdjacentsCellsMap pré-calculée array[cells][]
+@param ignore liste des cells à ignorer, [] par defaut
 @return null
 */
-function ft_show_LeekMoves(leeks, color, @acm)
+function ft_show_LeekMoves(leeks, color, @acm, @ignore)
 {
 	var cells = [];
-	var ignore = [];
 
 	for (var leek in leeks)
 	{
@@ -29,19 +29,19 @@ pour arriver jusqu'a nous
 @level 21
 @ops variables
 @param acm AdjacetsCellsMap pré-calculée
+@param ignore liste des cells à ignorer (par default [])
 @return null
 */
-function ft_show_dangerous_cells(acm)
+function ft_show_dangerous_cells(@acm, @ignore)
 {
 	var cells = [];
-	var ignore = [];
 	var path = [];
 	var range;
 
 	for (var enemy in getAliveEnemies())
 	{
 		range = getMP(enemy) + getWeaponMaxScope(getWeapon(enemy));
-		ft_cell_getReachableCells(getCell(enemy), range, acm, cells, ignore);
+		ft_cell_getReachableCells(getCell(enemy), range, cells, acm, ignore);
 		pushAll(path, getPath(getCell(enemy), getCell()));
 	}
 	mark(cells, COLOR_RED);
@@ -58,7 +58,9 @@ fonction d'entrée pour les affichages des couleurs
 */
 function ft_show_colors(@acm)
 {
-	ft_show_LeekMoves([getLeek()], COLOR_GREEN, acm);
-	ft_show_dangerous_cells(acm);
-	ft_show_LeekMoves(getAliveEnemies(), getColor(255, 184, 0), acm);
+	var ignore = [];
+
+	ft_show_LeekMoves([getLeek()], COLOR_GREEN, acm, ignore);
+	ft_show_dangerous_cells(acm, ignore);
+	ft_show_LeekMoves(getAliveEnemies(), getColor(255, 184, 0), acm, ignore);
 }
