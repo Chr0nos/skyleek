@@ -15,6 +15,8 @@ function ft_show_LeekMoves(leeks, color, @acm)
 
 /**
 colore en rouge les cases ou les enemies peuvent faire feu
+et en violet les chemin que prendrons probablement les enemis
+pour arriver jusqu'a nous
 @param acm AdjacetsCellsMap pré-calculée
 @return rien
 */
@@ -22,14 +24,17 @@ function ft_show_dangerous_cells(acm)
 {
 	var cells = [];
 	var ignore = [];
+	var path = [];
 	var range;
 
 	for (var enemy in getAliveEnemies())
 	{
 		range = getMP(enemy) + getWeaponMaxScope(getWeapon(enemy));
 		ft_cell_getReachableCells(getCell(enemy), range, acm, cells, ignore);
+		pushAll(path, getPath(getCell(enemy), getCell()));
 	}
 	mark(cells, COLOR_RED);
+	mark(path, getColor(255, 0, 255));
 }
 
 function ft_show_colors(@enemy, @acm)
