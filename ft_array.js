@@ -95,13 +95,16 @@ function ft_array_unique_old(@array)
 	}
 	return result;
 }
-
+/**
+compte le nombre d'occurences de "element" dans array
+@level 1
+@ops variable
+@param array reference vers array source
+@param n taille du array source: count(array) generalement
+@param element reference vers l'item que l'on cherche
+*/
 function ft_array_countElement(@array, n, @element)
 {
-	/*
-	** return the number of "element" in given array
-	** n = the size of the array
-	*/
 	var count;
 	var value;
 
@@ -114,6 +117,13 @@ function ft_array_countElement(@array, n, @element)
 	return count;
 }
 
+/**
+retire tous les doublons dans un array
+@level 1
+@ops variables
+@param array tableau à traiter
+@return array
+*/
 function ft_array_unique(@array)
 {
 	/*
@@ -230,18 +240,60 @@ function ft_array_sort(@array, size, pivot, sorter)
 	return result;
 }
 
+/**
+ajoute le tableau elements dans le tableau array
+en tenant compte de ne pas ajouter de doubles
+@param array tableau de destination
+@param elements tableau source
+@return null
+@level 1
+@ops variables
+*/
 function ft_array_pushAllUniques(@array, @elements)
 {
-	var n;
-	var element;
-
-	n = count(elements);
-	while (n--)
+	for (var element in elements)
 	{
-		element = elements[n];
 		if (!inArray(array, element))
 		{
 			push(array, element);
 		}
+	}
+}
+
+/**
+renvoi la un array de valeurs sous la forme de
+array[valeur] = true
+@level 1
+@ops variables
+@param array le tableau à traiter
+@return nouvel array avec les valeurs en clées
+*/
+function ft_array_valuesToMap(@array)
+{
+	var result = [];
+
+	for (var value in array)
+	{
+		result[value] = true;
+	}
+	return result;
+}
+
+/**
+inverse tous les booléns d'un array
+@level 1
+@ops variables
+@param array tableau à traiter
+@return null
+*/
+function ft_array_invertBools(@array)
+{
+	var x;
+
+	for (var key : var value in array)
+	{
+		if (value) x = false;
+		else x = true;
+		array[key] = x;
 	}
 }
