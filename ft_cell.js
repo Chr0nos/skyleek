@@ -91,7 +91,7 @@ function ft_cell_getZone(@leekCell, mp, @cells, @acm, @ignore)
 		for (var cell in acm[leekCell])
 		{
 			if (ignore[cell]);
-			else if (!isEmptyCell(cell)) ignore[cell] = true;
+			else if ((!isEmptyCell(cell)) && (getCell() != cell)) ignore[cell] = true;
 			else
 			{
 				push(cells, cell);
@@ -120,7 +120,7 @@ function ft_cell_getZoneMap(@leekCell, mp, @cells, @acm)
 		for (var cell in acm[leekCell])
 		{
 			if (cells[cell]);
-			else if (isEmptyCell(cell))
+			else if ((isEmptyCell(cell)) || (getCell() == cell))
 			{
 				cells[cell] = true;
 				ft_cell_getZoneMap(leekCell, mp, cells, acm);
