@@ -148,3 +148,72 @@ function ft_getSafeCells(cell, MP, @acm)
 	}
 	return safe;
 }
+
+/**
+renvoi les cellules sur les chemins enemies
+@level 37
+@ops variables
+@return array de cells
+*/
+function ft_cell_getEnemiesPaths()
+{
+	var paths = [];
+
+	for (var enemy in getAliveEnemies())
+	{
+		pushAll(paths, getPath(getCell(enemy), getCell()));
+	}
+	ft_array_unique(paths);
+	return paths;
+}
+
+/**
+return les cellules adjacentes a la liste de leeks
+ou ils peuvent se rendre avec leurs MP actuels
+@level 21
+@ops variables
+@param leeks array des leeks à afficher
+@param acm AdjacentsCellsMap pré-calculée array[cells][]
+@param ignore liste des cells à ignorer, [] par defaut
+@return null
+*/
+function ft_cell_getLeeksMoves(leeks, @acm, @ignore)
+{
+	var cells = [];
+
+	for (var leek in leeks)
+	{
+		ft_cell_getReachableCells(getCell(leek), getMP(leek), cells, acm, ignore);
+	}
+	return cells;
+}
+
+/**
+renvois les cases ou les enemies peuvent faire feu
+et en violet les chemin que prendrons probablement les enemis
+pour arriver jusqu'a nous
+@level 21
+@ops variables
+@param acm AdjacetsCellsMap
+@param ignore liste des cells à ignorer (par default [])
+@return null
+*/
+function ft_cell_getDangerous_cells(@acm, @ignore)
+{
+	/*
+	** internal functionement: we check each alive enemy and get
+	** his MP + weapon range, this is his "dangerous aera"
+	** we add each cells to the ignore array for optimisation purposes
+	*/
+	var cells = [];
+	var path = [];
+	var range;
+
+	for (var enemy in getAliveEnemies())
+	{
+		range = getMP(enemy) + getWeaponMaxScope(getWeapon(enemy));
+		ft_cell_getReachableCells(getCell(enemy), range, cells, acm, ignore);
+		for (var tmp in cells) ignore[tmp] = true;
+	}
+	return cells;
+}
