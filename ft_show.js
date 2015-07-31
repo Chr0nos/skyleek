@@ -18,7 +18,8 @@ function ft_show_colors(@acm)
 
 	myMoves = ft_cell_getLeeksMoves([ getLeek() ], acm, ignore);
 	enemiesMoves = ft_cell_getLeeksMoves(getAliveEnemies(), acm, ignore);
-	//dangerZone = ft_cell_getDangerous_cells(acm, ignore);
+	ignore = [];
+	dangerZone = ft_cell_getDangerous_cells(acm, ignore);
 	paths = ft_cell_getEnemiesPaths();
 
 	mark(myMoves, COLOR_GREEN);

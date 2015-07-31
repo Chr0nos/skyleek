@@ -4,21 +4,6 @@ include("ft_leeks");
 include("main");
 
 /**
-@level 21
-@ops 21
-@param cell la cellule à tester
-@return true si un leek peut s'y rendre, sinon false
-*/
-function ft_cell_isWalkable(cell)
-{
-	var content;
-
-	content = getCellContent(cell);
-	if (content != CELL_EMPTY) return false;
-	return true;
-}
-
-/**
 renvoi true si la cell est valide
 @level 1
 @return bool
@@ -106,13 +91,40 @@ function ft_cell_getZone(@leekCell, mp, @cells, @acm, @ignore)
 		for (var cell in acm[leekCell])
 		{
 			if (ignore[cell]);
-			else if (!ft_cell_isWalkable(cell)) ignore[cell] = true;
+			else if (!isEmptyCell(cell)) ignore[cell] = true;
 			else
 			{
 				push(cells, cell);
 				ignore[cell] = true;
+				ft_cell_getZone(cell, mp, cells, acm, ignore);
 			}
-			ft_cell_getZone(cell, mp, cells, acm, ignore);
+		}
+	}
+}
+
+/**
+peuple cells avec le radius autours de leekCell
+la map à pour CLEES les cellules et pour valeur true
+tel que : map[cellule] = true
+@param leekCell centre de la zone
+@param mp radius de la zone
+@param cells tableau de retour pour les cells
+@param acm AdjacentCellsMap
+@return null
+*/
+
+function ft_cell_getZoneMap(@leekCell, mp, @cells, @acm)
+{
+	if (mp--)
+	{
+		for (var cell in acm[leekCell])
+		{
+			if (cells[cell]);
+			else if (isEmptyCell(cell))
+			{
+				cells[cell] = true;
+				ft_cell_getZoneMap(leekCell, mp, cells, acm);
+			}
 		}
 	}
 }
