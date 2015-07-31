@@ -1,6 +1,7 @@
 include("ft_array");
 include("ft_weapon");
 include("ft_leeks");
+include("main");
 
 /**
 @level 21
@@ -23,7 +24,7 @@ renvoi true si la cell est valide
 function ft_cell_isValid(cell)
 {
 	if (cell === null) return false;
-	if ((cell < 0) || (cell > 613)) return false;
+	if ((cell < 1) || (cell > 612)) return false;
 	return true;
 }
 
@@ -114,67 +115,7 @@ function ft_cell_getReachableCells(@leekCell, mp, @cells, @acm, @ignore)
 	}
 }
 
-function ft_getReachableMap(@next, @map, @queue, cell, @ignore, @MP)
-{
-	/*
-	** Returns map
-	** ignore is an array of leeks ids
-	*/
-	var nextLeft;
-	var nextCell;
-	var nextCellContent;
-
-	nextLeft = count(next);
-	while (nextLeft--)
-	{
-		nextCell = next[nextLeft];
-		if (!ft_cell_isWalkable(nextCell));
-		else if (!inArray(ignore, getLeekOnCell(nextCell)));
-		else
-		{
-			map[nextCell] = map[cell] + 1;
-			if (map[nextCell] < MP)
-			{
-				push(queue, nextCell);
-			}
-		}
-	}
-}
-
-function ft_getReachableCells(cell, @MP, @ignore)
-{
-	/*
-	** Returns an array of all id reachable cells
-	*/
-	var queue = [];
-	var queueLeft;
-	var map = [];
-	var next;
-	var walk = [];
-
-	fill(map, -1, 613);
-	map[cell] = 0;
-	push(queue, cell);
-	queueLeft = count(queue);
-	while (queueLeft--)
-	{
-		cell = shift(queue);
-		next = ft_getAdjacentsCells(cell);
-		ft_getReachableMap(next, map, queue, cell, ignore, MP);
-	}
-	remove(map, ft_array_indexOf(map, -1, count(map)));
-	return walk;
-}
-
-function ft_getReachableCellsBy(leek, ignore)
-{
-	/*
-	** Returns an array of all id reachable cells by leek
-	*/
-	return ft_getReachableCells(getCell(leek), getMP(leek), ignore);
-}
-
-function ft_getSafeCells(cell, MP)
+function ft_getSafeCells(cell, MP, @acm)
 {
 	/*
 	** Returns an array of all id safe cells
@@ -188,11 +129,11 @@ function ft_getSafeCells(cell, MP)
 	var cCell;
 
 	next = ft_getNextTurn();
-	safe = ft_getReachableCells(cell, MP, [getLeek()]);
+	ft_cell_getReachableCells(cell, MP, acm, safe, ignore);
 	for (var enemy in getAliveEnemies()) 
 	{
 		ignore = subArray(next, 0, search(next, enemy));
-		reachable = ft_getReachableCellsBy(enemy, ignore);
+		ft_cell_getReachableCells(enemy, MP, acm, reachable, ignore);
 		weapon = getWeapon(enemy);
 		for (cCell in reachable) 
 		{
