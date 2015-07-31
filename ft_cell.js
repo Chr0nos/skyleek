@@ -5,6 +5,8 @@ include("main");
 
 /**
 @level 21
+@ops 21
+@param cell la cellule à tester
 @return true si un leek peut s'y rendre, sinon false
 */
 function ft_cell_isWalkable(cell)
@@ -97,7 +99,7 @@ si vous utilisez plusieures fois cette fonction: re-utilisez le meme ignore
 @param ignore array de cells à ignorer: passer [] (array vide) a la fonction
 @return rien le retour est dans le array cells
 */
-function ft_cell_getReachableCells(@leekCell, mp, @cells, @acm, @ignore)
+function ft_cell_getZone(@leekCell, mp, @cells, @acm, @ignore)
 {
 	if (mp--)
 	{
@@ -110,7 +112,7 @@ function ft_cell_getReachableCells(@leekCell, mp, @cells, @acm, @ignore)
 				push(cells, cell);
 				ignore[cell] = true;
 			}
-			ft_cell_getReachableCells(cell, mp, cells, acm, ignore);
+			ft_cell_getZone(cell, mp, cells, acm, ignore);
 		}
 	}
 }
@@ -129,11 +131,11 @@ function ft_getSafeCells(cell, MP, @acm)
 	var cCell;
 
 	next = ft_getNextTurn();
-	ft_cell_getReachableCells(cell, MP, acm, safe, ignore);
+	ft_cell_getZone(cell, MP, acm, safe, ignore);
 	for (var enemy in getAliveEnemies()) 
 	{
 		ignore = subArray(next, 0, search(next, enemy));
-		ft_cell_getReachableCells(enemy, MP, acm, reachable, ignore);
+		ft_cell_getZone(enemy, MP, acm, reachable, ignore);
 		weapon = getWeapon(enemy);
 		for (cCell in reachable) 
 		{
@@ -158,10 +160,12 @@ renvoi les cellules sur les chemins enemies
 function ft_cell_getEnemiesPaths()
 {
 	var paths = [];
+	var cell;
 
 	for (var enemy in getAliveEnemies())
 	{
-		pushAll(paths, getPath(getCell(enemy), getCell()));
+		cell = getCell(enemy);
+		pushAll(paths, getPath(cell, getCell(ft_getNearestEnemyTo(cell))));
 	}
 	ft_array_unique(paths);
 	return paths;
@@ -183,7 +187,7 @@ function ft_cell_getLeeksMoves(leeks, @acm, @ignore)
 
 	for (var leek in leeks)
 	{
-		ft_cell_getReachableCells(getCell(leek), getMP(leek), cells, acm, ignore);
+		ft_cell_getZone(getCell(leek), getMP(leek), cells, acm, ignore);
 	}
 	return cells;
 }
@@ -212,8 +216,29 @@ function ft_cell_getDangerous_cells(@acm, @ignore)
 	for (var enemy in getAliveEnemies())
 	{
 		range = getMP(enemy) + getWeaponMaxScope(getWeapon(enemy));
-		ft_cell_getReachableCells(getCell(enemy), range, cells, acm, ignore);
+		ft_cell_getZone(getCell(enemy), range, cells, acm, ignore);
 		for (var tmp in cells) ignore[tmp] = true;
 	}
 	return cells;
+}
+
+/**
+créé une map des cellules ou un leek peut se rendre
+la map à la forme de map[cellcules] = true
+@level 21
+@return array
+*/
+function ft_cell_getWalkableMap()
+{
+	var cell;
+	var map = [];
+	var content;
+
+	cell = 612;
+	while (cell--)
+	{
+		content = getCellContent(cell);
+		if (content == CELL_EMPTY) map[cell] = true;
+	}
+	return map;
 }
