@@ -18,33 +18,29 @@ function ft_cell_isValid(cell)
 /**
 renvoi les cellules adjacentes directes
 maxium 4 cells
+note: si pas de borderMap ou vide alors le monde bouclera sur lui même
 @level 21
 @ops ~50
 @param cell la cellule
+@param borderMap la map des bordures de la carte au format map[cellule] = true;
 @return array
 */
-function ft_getAdjacentsCells(cell)
+function ft_getAdjacentsCells(cell, borderMap)
 {
 	var adj = [];
-	var x;
-	var y;
-	var n;
 	var theoric_cells = [];
+	var jobList = [ ];
+	var theoricCell;
 
-	x   = getCellX(cell);
-	y   = getCellY(cell);
-
-	push(theoric_cells, getCellFromXY(x, y + 1));
-	push(theoric_cells, getCellFromXY(x, y - 1));
-	push(theoric_cells, getCellFromXY(x + 1, y));
-	push(theoric_cells, getCellFromXY(x - 1, y));
-
-	n = count(theoric_cells);
-	for (var ccell in theoric_cells)
+	jobList = [ 18 , 17, -18, -17 ];
+	for (var job in jobList)
 	{
-		if ((ft_cell_isValid(ccell)) && (!isObstacle(ccell)))
+		theoricCell = cell + job;
+		if (!ft_cell_isValid(theoricCell));
+		else if (borderMap[cell]);
+		else
 		{
-			push(adj, ccell);
+			push(adj, theoricCell);
 		}
 	}
 	return adj;
@@ -61,11 +57,13 @@ function ft_cell_getAllAdjacentsCells()
 {
 	var cell;
 	var cells = [];
+	var borderMap = [];
 
+	borderMap = ft_cell_getBorderMap();
 	cell = 614;
 	while (cell--)
 	{
-		cells[cell] = ft_getAdjacentsCells(cell);
+		cells[cell] = ft_getAdjacentsCells(cell, borderMap);
 	}
 	return cells;
 }
@@ -195,7 +193,7 @@ function ft_cell_getLeeksMoves(leeks, @acm, @ignore)
 
 	for (var leek in leeks)
 	{
-		ft_cell_getZone(getCell(leek), getMP(leek), cells, acm, ignore);
+		ft_cell_getZone(getCell(leek), getMP(leek) + 1, cells, acm, ignore);
 	}
 	return cells;
 }
@@ -228,8 +226,8 @@ function ft_cell_getDangerous_cells(@acm, @ignore)
 	for (var enemy in getAliveEnemies())
 	{
 		cell = getCell(enemy);
-		range = getWeaponMaxScope(getWeapon(enemy));
-		ft_cell_getZone(cell, getMP(enemy), radiusCells, acm, ignore);
+		range = getWeaponMaxScope(getWeapon(enemy)) + 1;
+		ft_cell_getZone(cell, getMP(enemy) + 1, radiusCells, acm, ignore);
 		radiusIgnore[cell] = true;
 		for (var reachableCell in radiusCells)
 		{
@@ -260,4 +258,33 @@ function ft_cell_getWalkableMap()
 		if (content == CELL_EMPTY) map[cell] = true;
 	}
 	return map;
+}
+
+/**
+renvoi la liste des cellules de bordure de la map
+sous la forme de array[cell] = true;
+@level 1
+@return array
+*/
+function ft_cell_getBorderMap()
+{
+	var cellsMap = [];
+	var pos;
+	var pas;
+	var max;
+	var jobList = [];
+
+	jobList = [ [ 0, 17, 1 ], [ 35, 595, 35 ], [ 17, 612, 35 ], [ 595, 612, 1 ] ];
+	for (var job in jobList)
+	{
+		pos = job[0];
+		max = job[1];
+		pas = job[2];
+		while (pos <= max)
+		{
+			cellsMap[pos] = true;
+			pos += pas;
+		}
+	}
+	return cellsMap;
 }
