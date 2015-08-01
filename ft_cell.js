@@ -103,6 +103,36 @@ function ft_cell_getZone(@leekCell, mp, @cells, @acm, @ignore)
 }
 
 /**
+renvoi la liste des celules d'ou il est possible de tirer depuis leekCell
+contrairement à ft_cell_getZone cette fonction tiens compte
+du lineOfSight, de plus elle ignore les obstacles joueurs (pas les obstacles normeaux)
+@param leekCell cellule courante à tester
+@param mp radius en nombre de cellules
+@param acm AdjacentCellsMap
+@param ignore liste des cells à ignore sous forme de ignore[cellule] = true
+@param shooterCell cellule d'origine (ne changera pas)
+@return null
+*/
+function ft_cell_getShootZone(@leekCell, mp, @cells, @acm, @ignore, shooterCell)
+{
+	if (!shooterCell) shooterCell = leekCell;
+	if (mp--)
+	{
+		for (var cell in acm[leekCell])
+		{
+			if (ignore[cell]);
+			else if (!lineOfSight(shooterCell, cell)) ignore[cell] = true;
+			else
+			{
+				push(cells, cell);
+				ignore[cell] = true;
+				ft_cell_getShootZone(cell, mp, cells, acm, ignore, shooterCell);
+			}
+		}
+	}
+}
+
+/**
 peuple cells avec le radius autours de leekCell
 la map à pour CLEES les cellules et pour valeur true
 tel que : map[cellule] = true
@@ -129,40 +159,6 @@ function ft_cell_getZoneMap(@leekCell, mp, @cells, @acm)
 	}
 }
 
-function ft_getSafeCells(cell, MP, @acm)
-{
-	/*
-	** Returns an array of all id safe cells
-	*/
-	var safe;
-	var next = [];
-	var reachable;
-	var weapon;
-	var ignore;
-	var target;
-	var cCell;
-
-	next = ft_getNextTurn();
-	ft_cell_getZone(cell, MP, acm, safe, ignore);
-	for (var enemy in getAliveEnemies()) 
-	{
-		ignore = subArray(next, 0, search(next, enemy));
-		ft_cell_getZone(enemy, MP, acm, reachable, ignore);
-		weapon = getWeapon(enemy);
-		for (cCell in reachable) 
-		{
-			for (target in safe)
-			{
-				if (ft_can_use_weapon(weapon, getLeekOnCell(cCell), target)) 
-				{
-					removeElement(safe, target);
-				}
-			}
-		}
-	}
-	return safe;
-}
-
 /**
 renvoi les cellules sur les chemins enemies
 @level 37
@@ -177,9 +173,9 @@ function ft_cell_getEnemiesPaths()
 	for (var enemy in getAliveEnemies())
 	{
 		cell = getCell(enemy);
-		pushAll(paths, getPath(cell, getCell(ft_getNearestEnemyTo(cell))));
+		//pushAll(paths, getPath(cell, getCell(ft_getNearestEnemyTo(cell))));
+		pushAll(paths, getPath(cell, getCell(ft_getNearestTo(cell, getNearestAlly))));
 	}
-	ft_array_unique(paths);
 	return paths;
 }
 
@@ -221,17 +217,28 @@ function ft_cell_getDangerous_cells(@acm, @ignore)
 	** his MP + weapon range, this is his "dangerous aera"
 	** we add each cells to the ignore array for optimisation purposes
 	*/
-	var cells = [];
-	var path = [];
+	var radiusCells = [];
+	var shootCells = [];
 	var range;
+	var cell;
+	var radiusIgnore = [];
+	var shootIgnore = [];
 
+	radiusIgnore = ignore;
 	for (var enemy in getAliveEnemies())
 	{
-		range = getMP(enemy) + getWeaponMaxScope(getWeapon(enemy));
-		ft_cell_getZone(getCell(enemy), range, cells, acm, ignore);
-		for (var tmp in cells) ignore[tmp] = true;
+		cell = getCell(enemy);
+		range = getWeaponMaxScope(getWeapon(enemy));
+		ft_cell_getZone(cell, getMP(enemy), radiusCells, acm, ignore);
+		radiusIgnore[cell] = true;
+		for (var reachableCell in radiusCells)
+		{
+			ft_cell_getShootZone(reachableCell, range,
+								shootCells, acm, shootIgnore, cell);
+			shootIgnore[reachableCell] = true;
+		}
 	}
-	return cells;
+	return shootCells;
 }
 
 /**
