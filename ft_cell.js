@@ -25,15 +25,13 @@ note: si pas de borderMap ou vide alors le monde bouclera sur lui même
 @param borderMap la map des bordures de la carte au format map[cellule] = true;
 @return array
 */
-function ft_getAdjacentsCells(cell, borderMap)
+function ft_getAdjacentsCells(cell, @borderMap)
 {
 	var adj = [];
 	var theoric_cells = [];
-	var jobList = [ ];
 	var theoricCell;
 
-	jobList = [ 18 , 17, -18, -17 ];
-	for (var job in jobList)
+	for (var job in ADJACENTS_CELLS_JOB)
 	{
 		theoricCell = cell + job;
 		if (!ft_cell_isValid(theoricCell));
@@ -58,7 +56,7 @@ function ft_cell_getAllAdjacentsCells()
 	var cell;
 	var cells = [];
 	var borderMap = [];
-
+	
 	borderMap = ft_cell_getBorderMap();
 	cell = 614;
 	while (cell--)
@@ -84,16 +82,18 @@ si vous utilisez plusieures fois cette fonction: re-utilisez le meme ignore
 */
 function ft_cell_getZone(@leekCell, mp, @cells, @acm, @ignore)
 {
+	var myCell;
+
 	if (mp--)
 	{
+		myCell = getCell();
 		for (var cell in acm[leekCell])
 		{
 			if (ignore[cell]);
-			else if ((!isEmptyCell(cell)) && (getCell() != cell)) ignore[cell] = true;
+			else if ((!isEmptyCell(cell)) && (myCell != cell)) ignore[cell] = true;
 			else
 			{
 				push(cells, cell);
-				ignore[cell] = true;
 				ft_cell_getZone(cell, mp, cells, acm, ignore);
 			}
 		}
@@ -111,15 +111,14 @@ du lineOfSight, de plus elle ignore les obstacles joueurs (pas les obstacles nor
 @param shooterCell cellule d'origine (ne changera pas)
 @return null
 */
-function ft_cell_getShootZone(@leekCell, mp, @cells, @acm, @ignore, shooterCell)
+function ft_cell_getShootZone(@leekCell, mp, @cells, @acm, @ignore, @shooterCell)
 {
-	if (!shooterCell) shooterCell = leekCell;
 	if (mp--)
 	{
 		for (var cell in acm[leekCell])
 		{
 			if (ignore[cell]);
-			else if (!lineOfSight(shooterCell, cell)) ignore[cell] = true;
+			else if (lineOfSight(cell, shooterCell)) ignore[cell] = true;
 			else
 			{
 				push(cells, cell);
@@ -193,7 +192,7 @@ function ft_cell_getLeeksMoves(leeks, @acm, @ignore)
 
 	for (var leek in leeks)
 	{
-		ft_cell_getZone(getCell(leek), getMP(leek) + 1, cells, acm, ignore);
+		ft_cell_getZone(getCell(leek), getMP(leek), cells, acm, ignore);
 	}
 	return cells;
 }
@@ -226,8 +225,8 @@ function ft_cell_getDangerous_cells(@acm, @ignore)
 	for (var enemy in getAliveEnemies())
 	{
 		cell = getCell(enemy);
-		range = getWeaponMaxScope(getWeapon(enemy)) + 1;
-		ft_cell_getZone(cell, getMP(enemy) + 1, radiusCells, acm, ignore);
+		range = getWeaponMaxScope(getWeapon(enemy));
+		ft_cell_getZone(cell, getMP(enemy), radiusCells, acm, ignore);
 		radiusIgnore[cell] = true;
 		for (var reachableCell in radiusCells)
 		{
@@ -287,4 +286,63 @@ function ft_cell_getBorderMap()
 		}
 	}
 	return cellsMap;
+}
+
+/**
+retourne la liste de cells pour la liste de leeks
+@param leeks liste de leeks
+@return array de cells
+*/
+function ft_cell_getLeeksCells(leeks)
+{
+	var cells = [];
+
+	for (var leek in leeks)
+	{
+		push(cells, getCell(leek));
+	}
+	return cells;
+}
+
+/**
+retourne le radius maximum d'une zone de cellules
+@param cells la liste des cellule à tester (array)
+@param root la cellule au centre
+@return int
+*/
+function ft_cell_getMaxRadiusForCells(@cells, root)
+{
+	var radius;
+	var dist;
+
+	for (var cell in cells)
+	{
+		dist = getDistance(cell, root);
+		if (dist > radius) radius = dist;
+	}
+	return radius;
+}
+
+function ft_cell_getPerimeterOfZone(@zone, @acm)
+{
+	var dist;
+	var border;
+	var borderCells = [];
+	var zoneMap = [];
+
+	zoneMap = ft_array_valuesToMap(zone);
+	for (var cell in zone)
+	{
+		border = false;
+		for (var x in acm[cell])
+		{
+			if (!zoneMap[x])
+			{
+				border = true;
+				break;
+			}
+		}
+		if (border) push(borderCells, cell);
+	}
+	return borderCells;
 }

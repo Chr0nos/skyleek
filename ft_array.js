@@ -297,3 +297,20 @@ function ft_array_invertBools(@array)
 		array[key] = x;
 	}
 }
+/**
+renvoi les clef du array dans un nouvel array
+@level 1
+@ops variables
+@param array tableau à traiter
+@return array des clef du array
+*/
+function ft_array_getKeys(@array)
+{
+	var keys = [];
+
+	for (var key : var value in array)
+	{
+		push(keys, key);
+	}
+	return keys;
+}

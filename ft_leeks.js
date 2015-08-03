@@ -65,3 +65,28 @@ function ft_getLifePc(leek)
 {
 	return getLife(leek) / getTotalLife(leek) * 100;
 }
+
+/**
+renvoi l'enemi le plus proche de cell
+@param cell la cellule d'ou commenter le test
+@return leekId du leek le plus proche
+*/
+function ft_getNearestTo(cell, func)
+{
+	var distance;
+	var newDistance;
+	var leek;
+
+	distance = 612;
+	for (var enemy in func())
+	{
+		newDistance = getDistance(cell, getCell(enemy));
+		if (newDistance < distance)
+		{
+			distance = newDistance;
+			leek = enemy;
+		}
+	}
+	return leek;
+}
+
