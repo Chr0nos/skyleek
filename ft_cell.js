@@ -166,12 +166,15 @@ function ft_cell_getEnemiesPaths()
 {
 	var paths = [];
 	var cell;
+	var allyTarget;
+	var allys = [];
 
+	allys = getAliveAllies();
 	for (var enemy in getAliveEnemies())
 	{
 		cell = getCell(enemy);
-		//pushAll(paths, getPath(cell, getCell(ft_getNearestEnemyTo(cell))));
-		pushAll(paths, getPath(cell, getCell(ft_getNearestTo(cell, getNearestAlly))));
+		allyTarget = ft_cell_getNearestLeek(allys, cell);
+		pushAll(paths, getPath(cell, getCell(allyTarget)));
 	}
 	return paths;
 }
@@ -221,6 +224,7 @@ function ft_cell_getDangerous_cells(@acm, @ignore)
 	var radiusIgnore = [];
 	var shootIgnore = [];
 
+	ignore = OBSTACLES_MAP;
 	radiusIgnore = ignore;
 	for (var enemy in getAliveEnemies())
 	{
@@ -323,6 +327,14 @@ function ft_cell_getMaxRadiusForCells(@cells, root)
 	return radius;
 }
 
+/**
+renvoi le périmetre d'une zone au format array(cell1, cell2, ...)
+@param zone la zone à traiter
+@param acm AdjacentCellMap
+@return array de cells
+@level 1
+@ops variables
+*/
 function ft_cell_getPerimeterOfZone(@zone, @acm)
 {
 	var dist;
@@ -346,3 +358,31 @@ function ft_cell_getPerimeterOfZone(@zone, @acm)
 	}
 	return borderCells;
 }
+
+/**
+renvoi l'id du leek le plus proche de cell
+@level 37
+@ops variables
+@param cell la cellule d'ou compter la distance
+@param leeks le array de leeks à tester
+@return leekId du leek le plus proche de cell
+*/
+function ft_cell_getNearestLeek(@leeks, cell)
+{
+	var dist;
+	var tmpDist;
+	var closestLeek;
+
+	dist = 612;
+	for (var leek in leeks)
+	{
+		tmpDist = getPathLength(cell, getCell(leek));
+		if (tmpDist < dist)
+		{
+			dist = tmpDist;
+			closestLeek = leek;
+		}
+	}
+	return closestLeek;
+}
+
