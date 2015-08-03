@@ -385,4 +385,3 @@ function ft_cell_getNearestLeek(@leeks, cell)
 	}
 	return closestLeek;
 }
-

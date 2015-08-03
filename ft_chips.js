@@ -32,10 +32,8 @@ function ft_chip_is_summon(chip)
 {
 	var chips = [];
 	
-	push(chips, CHIP_PUNY_BULB);
-	push(chips, CHIP_FIRE_BULB);
-	push(chips, CHIP_ICED_BULB);
-	return ft_inArray(chips, chip, count(chips));
+	chips = [ CHIP_PUNY_BULB, CHIP_FIRE_BULB, CHIP_ICED_BULB ];
+	return ft_inArray(chips, chip);
 }
 
 function ft_chip_summon(chip)
@@ -107,4 +105,3 @@ function ft_diff(@tab1, @tab2)
 	}
 	return result;
 }
-

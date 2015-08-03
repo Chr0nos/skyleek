@@ -24,15 +24,15 @@ function ft_array_indexOf(@array, item, array_size)
 	return -1;
 }
 
-function ft_inArray(@array, item, size)
+function ft_inArray(@array, item)
 {
 	/*
 	* This function return true of item is
 	* in "array", else it will return false. You have to fill the array size
 	*/
-	while (size--)
+	for (var value in array)
 	{
-		if (array[size] == item) return true;
+		if (value == item) return true;
 	}
 	return false;
 }
