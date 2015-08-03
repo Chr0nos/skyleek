@@ -2,7 +2,6 @@ include("ft_heal");
 include("ft_chips");
 include("ft_move");
 include("ft_use_weapons");
-include("ft_speak");
 include("ft_cell");
 include("ft_show");
 include("ft_numbers");
@@ -25,7 +24,6 @@ function main()
 	ft_show_colors(ADJACENTS_CELLS_MAP);
 	if ((turn % 3) == 0) useChip(CHIP_STEROID, getLeek());
 	ft_heal();
-	ft_speak(turn, enemy);
 	ft_use_weapons(enemy, enemy_cell);
 	ft_chips(enemy);
 	ft_move_post(enemy);
